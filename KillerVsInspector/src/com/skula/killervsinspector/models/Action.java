@@ -1,6 +1,5 @@
 package com.skula.killervsinspector.models;
 
-
 public class Action {
 	public static final int SELECT_PERSON = 0;
 	public static final int PICK_EVIDENCE = 1;
@@ -35,5 +34,25 @@ public class Action {
 
 	public void setPosition(Position position) {
 		this.position = position;
+	}
+
+	@Override
+	public String toString() {
+		switch (type) {
+		case Action.SELECT_PERSON:
+			return "SELECT_PERSON, " + position.getX() + ", " + position.getY();
+		case Action.PICK_EVIDENCE:
+			return "PICK_EVIDENCE, " + position.getX() + ", " + position.getY();
+		case Action.SHIFT_DOWN:
+			return "SHIFT_DOWN, " + position.getX() + ", " + position.getY();
+		case Action.SHIFT_UP:
+			return "SHIFT_UP, " + position.getX() + ", " + position.getY();
+		case Action.SHIFT_LEFT:
+			return "SHIFT_LEFT, " + position.getX() + ", " + position.getY();
+		case Action.SHIFT_RIGHT:
+			return "SHIFT_RIGHT, " + position.getX() + ", " + position.getY();
+		default:
+			return "";
+		}
 	}
 }

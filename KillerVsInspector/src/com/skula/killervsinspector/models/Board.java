@@ -8,10 +8,6 @@ public class Board {
 	private int nRows;
 	private int nColumns;
 
-	public static void main(String[] args) {
-
-	}
-
 	public Board(List<Person> persons) {
 		this.nRows = 5;
 		this.nColumns = 5;
@@ -29,7 +25,7 @@ public class Board {
 		set(Person.DECEASED, 1, 0);
 		set(Person.DECEASED, 2, 0);
 		set(Person.DECEASED, 3, 0);
-		set(Person.DECEASED, 4, 0);
+		set(Person.INNOCENT, 4, 0);
 	}
 
 	public int getId(int i, int j) {
@@ -94,7 +90,7 @@ public class Board {
 
 	public boolean isRowEmpty(int rowId) {
 		for (int i = 0; i < nRows; i++) {
-			if (board[i][rowId].getState() == Person.SUSPECTED) {
+			if (board[i][rowId].getState() == Person.SUSPECT) {
 				return false;
 			}
 		}
@@ -103,7 +99,7 @@ public class Board {
 
 	public boolean isColumnEmpty(int colId) {
 		for (int i = 0; i < nColumns; i++) {
-			if (board[colId][i].getState() == Person.SUSPECTED) {
+			if (board[colId][i].getState() == Person.SUSPECT) {
 				return false;
 			}
 		}
@@ -154,7 +150,7 @@ public class Board {
 	public void printBoard() {
 		for (int i = 0; i < nRows; i++) {
 			for (int j = 0; j < nColumns; j++) {
-				if (board[j][i].getState() == Person.SUSPECTED) {
+				if (board[j][i].getState() == Person.SUSPECT) {
 					System.out.print("?" + board[j][i].getId() + "\t");
 				} else if (board[j][i].getState() == Person.DECEASED) {
 					System.out.print("*" + board[j][i].getId() + "\t");

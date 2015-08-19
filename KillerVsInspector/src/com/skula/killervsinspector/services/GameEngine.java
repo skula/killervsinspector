@@ -25,11 +25,6 @@ public class GameEngine {
 	private boolean isFirstTurn;
 	private boolean isExonerate;
 
-	public static void main(String[] args) {
-		GameEngine ge = new GameEngine();
-		ge.printBoard();
-	}
-
 	public GameEngine() {
 		// Person.shufflePersons();
 		this.board = new Board(Person.getAllPersons());
@@ -99,8 +94,7 @@ public class GameEngine {
 		switch (action.getType()) {
 		case Action.SHIFT_DOWN:
 			if (lastAction.getType() == Action.SHIFT_UP
-					&& lastAction.getPosition().getX() == action.getPosition()
-							.getX()) {
+					&& lastAction.getPosition().getX() == action.getPosition().getX()) {
 				return false;
 			}
 			if (action.getPosition().getX() >= board.getnColumns()) {
@@ -110,8 +104,7 @@ public class GameEngine {
 			return true;
 		case Action.SHIFT_UP:
 			if (lastAction.getType() == Action.SHIFT_DOWN
-					&& lastAction.getPosition().getX() == action.getPosition()
-							.getX()) {
+					&& lastAction.getPosition().getX() == action.getPosition().getX()) {
 				return false;
 			}
 			if (action.getPosition().getX() >= board.getnColumns()) {
@@ -121,8 +114,7 @@ public class GameEngine {
 			return true;
 		case Action.SHIFT_LEFT:
 			if (lastAction.getType() == Action.SHIFT_RIGHT
-					&& lastAction.getPosition().getY() == action.getPosition()
-							.getY()) {
+					&& lastAction.getPosition().getY() == action.getPosition().getY()) {
 				return false;
 			}
 			if (action.getPosition().getY() >= board.getnRows()) {
@@ -132,8 +124,7 @@ public class GameEngine {
 			return true;
 		case Action.SHIFT_RIGHT:
 			if (lastAction.getType() == Action.SHIFT_LEFT
-					&& lastAction.getPosition().getY() == action.getPosition()
-							.getY()) {
+					&& lastAction.getPosition().getY() == action.getPosition().getY()) {
 				return false;
 			}
 			if (action.getPosition().getY() >= board.getnRows()) {
@@ -152,7 +143,7 @@ public class GameEngine {
 					return false;
 				}
 
-				if (board.get(action.getPosition()).getState() != Person.SUSPECTED) {
+				if (board.get(action.getPosition()).getState() != Person.SUSPECT) {
 					this.action = null;
 					return false;
 				}
@@ -187,7 +178,7 @@ public class GameEngine {
 						return false;
 					}
 
-					if (board.get(action.getPosition()).getState() != Person.SUSPECTED) {
+					if (board.get(action.getPosition()).getState() != Person.SUSPECT) {
 						this.action = null;
 						return false;
 					}
@@ -376,6 +367,10 @@ public class GameEngine {
 		return isAdjacentPerson(id, p.getX(), p.getY());
 	}
 
+	public boolean isEvidence(int id) {
+		return evidenceHand.contains(id);
+	}
+
 	public void printEvidenceDeck() {
 		System.out.print("Deck: ");
 		for (Person p : evidenceDeck) {
@@ -402,5 +397,13 @@ public class GameEngine {
 
 	public int getToken() {
 		return token;
+	}
+
+	public int getKillerId() {
+		return killerId;
+	}
+
+	public int getInspectorId() {
+		return inspectorId;
 	}
 }

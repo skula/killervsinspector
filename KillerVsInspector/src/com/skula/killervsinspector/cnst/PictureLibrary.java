@@ -40,6 +40,7 @@ public class PictureLibrary {
 		this.map.put(R.drawable.geneva_suspect, BitmapFactory.decodeResource(res, R.drawable.geneva_suspect));
 		this.map.put(R.drawable.yvonne_suspect, BitmapFactory.decodeResource(res, R.drawable.yvonne_suspect));
 		this.map.put(R.drawable.simon_suspect, BitmapFactory.decodeResource(res, R.drawable.simon_suspect));
+		this.map.put(R.drawable.ophelia_suspect, BitmapFactory.decodeResource(res, R.drawable.ophelia_suspect));
 
 		this.map.put(R.drawable.ernest_offside, BitmapFactory.decodeResource(res, R.drawable.ernest_offside));
 		this.map.put(R.drawable.franklin_offside, BitmapFactory.decodeResource(res, R.drawable.franklin_offside));
@@ -65,9 +66,18 @@ public class PictureLibrary {
 		this.map.put(R.drawable.geneva_offside, BitmapFactory.decodeResource(res, R.drawable.geneva_offside));
 		this.map.put(R.drawable.yvonne_offside, BitmapFactory.decodeResource(res, R.drawable.yvonne_offside));
 		this.map.put(R.drawable.simon_offside, BitmapFactory.decodeResource(res, R.drawable.simon_offside));
+		this.map.put(R.drawable.ophelia_offside, BitmapFactory.decodeResource(res, R.drawable.ophelia_offside));
 
 		this.map.put(R.drawable.deceased, BitmapFactory.decodeResource(res, R.drawable.deceased));
 		this.map.put(R.drawable.innocent, BitmapFactory.decodeResource(res, R.drawable.innocent));
+		
+		this.map.put(R.drawable.shift_up, BitmapFactory.decodeResource(res, R.drawable.shift_up));
+		this.map.put(R.drawable.shift_down, BitmapFactory.decodeResource(res, R.drawable.shift_down));
+		this.map.put(R.drawable.shift_left, BitmapFactory.decodeResource(res, R.drawable.shift_left));
+		this.map.put(R.drawable.shift_right, BitmapFactory.decodeResource(res, R.drawable.shift_right));
+		
+		//this.map.put(R.drawable.shift_player, BitmapFactory.decodeResource(res, R.drawable.shift_player));
+		//this.map.put(R.drawable.shift_evidence, BitmapFactory.decodeResource(res, R.drawable.shift_evidence));
 	}
 
 	public Bitmap get(int id) {
