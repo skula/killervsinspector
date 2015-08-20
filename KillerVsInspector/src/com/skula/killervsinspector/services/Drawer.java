@@ -56,18 +56,14 @@ public class Drawer {
 				c.drawBitmap(lib.get(b.get(j, i).getDrawableId()), PERSON_RECT, r, paint);
 				
 				// draw special effect
-				switch (b.get(j, i).getState()) {
-				case Person.SUSPECT:
-					if(engine.isEvidence(b.getId(j, i))){
-						c.drawBitmap(lib.get(R.drawable.evidence), PERSON_RECT, r, paint);
-					}
-					break;
-				case Person.INNOCENT:
-					c.drawBitmap(lib.get(R.drawable.innocent), PERSON_RECT, r, paint);
-					break;
-				case Person.DECEASED:
+				if(b.get(j, i).isDeceased()){
 					c.drawBitmap(lib.get(R.drawable.deceased), PERSON_RECT, r, paint);
-					break;
+				}
+				if(b.get(j, i).isDeceased()){
+					c.drawBitmap(lib.get(R.drawable.innocent), PERSON_RECT, r, paint);
+				}				
+				if(engine.isEvidence(b.getId(j, i))){
+					c.drawBitmap(lib.get(R.drawable.evidence), PERSON_RECT, r, paint);
 				}
 				
 				// draw player

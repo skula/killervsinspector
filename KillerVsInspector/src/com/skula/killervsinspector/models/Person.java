@@ -7,58 +7,50 @@ import java.util.List;
 import com.skula.killervsinspector.R;
 
 public class Person {
-	public static final int SUSPECT = 0;
-	public static final int DECEASED = 1;
-	public static final int INNOCENT = 2;
-
 	private int id;
-	private int state;
+	private String name;
+	private boolean deceased;
+	private boolean innocent;
+
 	private int drawIdSuspect;
 	private int drawIdOffside;
 
 	private static List<Person> persons;
-
 	static {
 		persons = new ArrayList<Person>();
 
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.ernest_suspect, R.drawable.ernest_offside));
-		persons.add(new Person(1, Person.SUSPECT, R.drawable.franklin_suspect, R.drawable.franklin_offside));
-		persons.add(new Person(2, Person.SUSPECT, R.drawable.phoebe_suspect, R.drawable.phoebe_offside));
-		persons.add(new Person(3, Person.SUSPECT, R.drawable.horatio_suspect, R.drawable.horatio_offside));
-		persons.add(new Person(4, Person.SUSPECT, R.drawable.kristoph_suspect, R.drawable.kristoph_offside));
-		persons.add(new Person(5, Person.SUSPECT, R.drawable.ryan_suspect, R.drawable.ryan_offside));
-		persons.add(new Person(6, Person.SUSPECT, R.drawable.udstad_suspect, R.drawable.udstad_offside));
-		persons.add(new Person(7, Person.SUSPECT, R.drawable.deidre_suspect, R.drawable.deidre_offside));
-		persons.add(new Person(8, Person.SUSPECT, R.drawable.linus_suspect, R.drawable.linus_offside));
-		persons.add(new Person(9, Person.SUSPECT, R.drawable.quinton_suspect, R.drawable.quinton_offside));
-		persons.add(new Person(10, Person.SUSPECT, R.drawable.julian_suspect, R.drawable.julian_offside));
-		persons.add(new Person(11, Person.SUSPECT, R.drawable.alyss_suspect, R.drawable.alyss_offside));
-		persons.add(new Person(12, Person.SUSPECT, R.drawable.barrin_suspect, R.drawable.barrin_offside));
-		persons.add(new Person(13, Person.SUSPECT, R.drawable.clive_suspect, R.drawable.clive_offside));
-		persons.add(new Person(14, Person.SUSPECT, R.drawable.irma_suspect, R.drawable.irma_offside));
-		persons.add(new Person(15, Person.SUSPECT, R.drawable.trevor_suspect, R.drawable.trevor_offside));
-		persons.add(new Person(16, Person.SUSPECT, R.drawable.vladimir_suspect, R.drawable.vladimir_offside));
-		persons.add(new Person(17, Person.SUSPECT, R.drawable.marion_suspect, R.drawable.marion_offside));
-		persons.add(new Person(18, Person.SUSPECT, R.drawable.niel_suspect, R.drawable.niel_offside));
-		persons.add(new Person(19, Person.SUSPECT, R.drawable.wilhelm_suspect, R.drawable.wilhelm_offside));
-		persons.add(new Person(20, Person.SUSPECT, R.drawable.zachary_suspect, R.drawable.zachary_offside));
-		persons.add(new Person(21, Person.SUSPECT, R.drawable.geneva_suspect, R.drawable.geneva_offside));
-		persons.add(new Person(22, Person.SUSPECT, R.drawable.yvonne_suspect, R.drawable.yvonne_offside));
-		persons.add(new Person(23, Person.SUSPECT, R.drawable.simon_suspect, R.drawable.simon_offside));
-		persons.add(new Person(24, Person.SUSPECT, R.drawable.ophelia_suspect, R.drawable.ophelia_offside));
+		persons.add(new Person(0, "Ernest", R.drawable.ernest_suspect, R.drawable.ernest_offside));
+		persons.add(new Person(1, "Franklin", R.drawable.franklin_suspect, R.drawable.franklin_offside));
+		persons.add(new Person(2, "Phoebe", R.drawable.phoebe_suspect, R.drawable.phoebe_offside));
+		persons.add(new Person(3, "Horatio", R.drawable.horatio_suspect, R.drawable.horatio_offside));
+		persons.add(new Person(4, "Kristoph", R.drawable.kristoph_suspect, R.drawable.kristoph_offside));
+		persons.add(new Person(5, "Ryan", R.drawable.ryan_suspect, R.drawable.ryan_offside));
+		persons.add(new Person(6, "Udstad", R.drawable.udstad_suspect, R.drawable.udstad_offside));
+		persons.add(new Person(7, "Deidre", R.drawable.deidre_suspect, R.drawable.deidre_offside));
+		persons.add(new Person(8, "Linus", R.drawable.linus_suspect, R.drawable.linus_offside));
+		persons.add(new Person(9, "Quinton", R.drawable.quinton_suspect, R.drawable.quinton_offside));
+		persons.add(new Person(10, "Julian", R.drawable.julian_suspect, R.drawable.julian_offside));
+		persons.add(new Person(11, "Alyss", R.drawable.alyss_suspect, R.drawable.alyss_offside));
+		persons.add(new Person(12, "Barrin", R.drawable.barrin_suspect, R.drawable.barrin_offside));
+		persons.add(new Person(13, "Clive", R.drawable.clive_suspect, R.drawable.clive_offside));
+		persons.add(new Person(14, "irma", R.drawable.irma_suspect, R.drawable.irma_offside));
+		persons.add(new Person(15, "Trevor", R.drawable.trevor_suspect, R.drawable.trevor_offside));
+		persons.add(new Person(16, "Vladimir", R.drawable.vladimir_suspect, R.drawable.vladimir_offside));
+		persons.add(new Person(17, "Marion", R.drawable.marion_suspect, R.drawable.marion_offside));
+		persons.add(new Person(18, "Niel", R.drawable.niel_suspect, R.drawable.niel_offside));
+		persons.add(new Person(19, "Wilhelm", R.drawable.wilhelm_suspect, R.drawable.wilhelm_offside));
+		persons.add(new Person(20, "Zachary", R.drawable.zachary_suspect, R.drawable.zachary_offside));
+		persons.add(new Person(21, "Geneva", R.drawable.geneva_suspect, R.drawable.geneva_offside));
+		persons.add(new Person(22, "Yvonne", R.drawable.yvonne_suspect, R.drawable.yvonne_offside));
+		persons.add(new Person(23, "Simon", R.drawable.simon_suspect, R.drawable.simon_offside));
+		persons.add(new Person(24, "Ophelia", R.drawable.ophelia_suspect, R.drawable.ophelia_offside));
 	}
 
-	public static void main(String arg[]) {
-		Person.shufflePersons();
-		System.out.println(Person.getAllPersons());
-	}
-
-	public Person() {
-	}
-
-	public Person(int id, int state, int drawIdSuspect, int drawIdOffside) {
+	public Person(int id, String name, int drawIdSuspect, int drawIdOffside) {
 		this.id = id;
-		this.state = state;
+		this.name = name;
+		this.deceased = false;
+		this.innocent = false;
 		this.drawIdSuspect = drawIdSuspect;
 		this.drawIdOffside = drawIdOffside;
 	}
@@ -83,24 +75,35 @@ public class Person {
 		this.id = id;
 	}
 
-	public int getState() {
-		return state;
+	public String getName() {
+		return name;
 	}
 
-	public void setState(int state) {
-		this.state = state;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public int getDrawableId() {
-		if (state == Person.SUSPECT) {
-			return drawIdSuspect;
-		} else {
+	public boolean isDeceased() {
+		return deceased;
+	}
+
+	public void setDeceased(boolean deceased) {
+		this.deceased = deceased;
+	}
+
+	public boolean isInnocent() {
+		return innocent;
+	}
+
+	public void setInnocent(boolean innocent) {
+		this.innocent = innocent;
+	}
+	
+	public int getDrawableId(){
+		if(isDeceased() || isInnocent()){
 			return drawIdOffside;
+		}else{
+			return drawIdSuspect;
 		}
-	}
-
-	@Override
-	public String toString() {
-		return "Person [id=" + id + ", state=" + state + "]";
 	}
 }

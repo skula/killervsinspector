@@ -3,7 +3,6 @@ package com.skula.killervsinspector.models;
 import java.util.List;
 
 public class Board {
-
 	private Person[][] board;
 	private int nRows;
 	private int nColumns;
@@ -21,11 +20,11 @@ public class Board {
 		}
 
 		// bouchons
-		set(Person.DECEASED, 0, 0);
-		set(Person.DECEASED, 1, 0);
-		set(Person.DECEASED, 2, 0);
-		set(Person.DECEASED, 3, 0);
-		set(Person.INNOCENT, 4, 0);
+		setDeceased(true, 0, 0);
+		setDeceased(true, 1, 0);
+		setDeceased(true, 2, 0);
+		setDeceased(true, 3, 0);
+		setDeceased(true, 4, 0);
 	}
 
 	public int getId(int i, int j) {
@@ -88,18 +87,18 @@ public class Board {
 		}
 	}
 
-	public boolean isRowEmpty(int rowId) {
+	public boolean isRowErasable(int rowId) {
 		for (int i = 0; i < nRows; i++) {
-			if (board[i][rowId].getState() == Person.SUSPECT) {
+			if (!board[i][rowId].isDeceased()) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public boolean isColumnEmpty(int colId) {
+	public boolean isColumnErasable(int colId) {
 		for (int i = 0; i < nColumns; i++) {
-			if (board[colId][i].getState() == Person.SUSPECT) {
+			if (!board[colId][i].isDeceased()) {
 				return false;
 			}
 		}
@@ -138,7 +137,7 @@ public class Board {
 		nRows--;
 		board = tmp;
 	}
-	
+
 	public Person get(int x, int y) {
 		return board[x][y];
 	}
@@ -147,31 +146,20 @@ public class Board {
 		return board[p.getX()][p.getY()];
 	}
 
-	public void printBoard() {
-		for (int i = 0; i < nRows; i++) {
-			for (int j = 0; j < nColumns; j++) {
-				if (board[j][i].getState() == Person.SUSPECT) {
-					System.out.print("?" + board[j][i].getId() + "\t");
-				} else if (board[j][i].getState() == Person.DECEASED) {
-					System.out.print("*" + board[j][i].getId() + "\t");
-				} else {
-					System.out.print("!" + board[j][i].getId() + "\t");
-				}
-			}
-			System.out.println("");
-		}
+	public void setDeceased(boolean deceased, int x, int y) {
+		board[x][y].setDeceased(deceased);
 	}
 
-	public Position getPositionByOrder(int o) {
-		return new Position(o / nColumns, o % nColumns);
+	public void setInnocent(boolean innocent, int x, int y) {
+		board[x][y].setDeceased(innocent);
 	}
 
-	public void set(int state, int x, int y) {
-		board[x][y].setState(state);
+	public void setDeceased(boolean deceased, Position p) {
+		setDeceased(deceased, p.getX(), p.getY());
 	}
 
-	public void set(int state, Position p) {
-		board[p.getX()][p.getY()].setState(state);
+	public void setInnocent(boolean innocent, Position p) {
+		setInnocent(innocent, p.getX(), p.getY());
 	}
 
 	public int getnRows() {

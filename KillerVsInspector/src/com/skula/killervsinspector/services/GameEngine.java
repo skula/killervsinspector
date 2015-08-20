@@ -11,18 +11,22 @@ import com.skula.killervsinspector.models.Position;
 public class GameEngine {
 	public static final int TURN_KILLER = 0;
 	public static final int TURN_INSPECTOR = 1;
+	public static final int MAX_DECEASED = 16;
 
 	private Board board;
-
 	private List<Person> evidenceDeck;
 	private List<Integer> evidenceHand;
+
+	private int token;
 	private int killerId;
 	private int inspectorId;
+
 	private Action action;
 	private Action lastAction;
 
-	private int token;
+	private int nDeceased;
 	private boolean isFirstTurn;
+	private boolean endOfGame;
 	private boolean isExonerate;
 
 	public GameEngine() {
@@ -39,6 +43,7 @@ public class GameEngine {
 		this.killerId = -1;
 		this.inspectorId = -1;
 		this.isExonerate = false;
+		this.nDeceased = 0;
 
 		// bouchon
 		this.killerId = 12;
@@ -58,12 +63,10 @@ public class GameEngine {
 					this.action = null;
 					return false;
 				}
-
 				if (!isAdjacentPerson(killerId, action.getPosition())) {
 					this.action = null;
 					return false;
 				}
-
 				return true;
 			}
 		} else {
@@ -78,12 +81,10 @@ public class GameEngine {
 					this.action = null;
 					return false;
 				}
-
 				if (!canBeExonerate(action.getPosition())) {
 					this.action = null;
 					return false;
 				}
-
 				return true;
 			}
 		}
@@ -94,7 +95,8 @@ public class GameEngine {
 		switch (action.getType()) {
 		case Action.SHIFT_DOWN:
 			if (lastAction.getType() == Action.SHIFT_UP
-					&& lastAction.getPosition().getX() == action.getPosition().getX()) {
+					&& lastAction.getPosition().getX() == action.getPosition()
+							.getX()) {
 				return false;
 			}
 			if (action.getPosition().getX() >= board.getnColumns()) {
@@ -104,7 +106,8 @@ public class GameEngine {
 			return true;
 		case Action.SHIFT_UP:
 			if (lastAction.getType() == Action.SHIFT_DOWN
-					&& lastAction.getPosition().getX() == action.getPosition().getX()) {
+					&& lastAction.getPosition().getX() == action.getPosition()
+							.getX()) {
 				return false;
 			}
 			if (action.getPosition().getX() >= board.getnColumns()) {
@@ -114,7 +117,8 @@ public class GameEngine {
 			return true;
 		case Action.SHIFT_LEFT:
 			if (lastAction.getType() == Action.SHIFT_RIGHT
-					&& lastAction.getPosition().getY() == action.getPosition().getY()) {
+					&& lastAction.getPosition().getY() == action.getPosition()
+							.getY()) {
 				return false;
 			}
 			if (action.getPosition().getY() >= board.getnRows()) {
@@ -124,7 +128,8 @@ public class GameEngine {
 			return true;
 		case Action.SHIFT_RIGHT:
 			if (lastAction.getType() == Action.SHIFT_LEFT
-					&& lastAction.getPosition().getY() == action.getPosition().getY()) {
+					&& lastAction.getPosition().getY() == action.getPosition()
+							.getY()) {
 				return false;
 			}
 			if (action.getPosition().getY() >= board.getnRows()) {
@@ -143,7 +148,7 @@ public class GameEngine {
 					return false;
 				}
 
-				if (board.get(action.getPosition()).getState() != Person.SUSPECT) {
+				if (board.get(action.getPosition()).isDeceased()) {
 					this.action = null;
 					return false;
 				}
@@ -178,7 +183,8 @@ public class GameEngine {
 						return false;
 					}
 
-					if (board.get(action.getPosition()).getState() != Person.SUSPECT) {
+					if (board.get(action.getPosition()).isDeceased()
+							|| board.get(action.getPosition()).isInnocent()) {
 						this.action = null;
 						return false;
 					}
@@ -202,7 +208,8 @@ public class GameEngine {
 				setKillerId();
 				action = null;
 			} else {
-				board.set(Person.DECEASED, action.getPosition());
+				board.setDeceased(true, action.getPosition());
+				nDeceased++;
 				lastAction = action;
 				action = null;
 				nextPlayer();
@@ -257,13 +264,20 @@ public class GameEngine {
 		if (token == TURN_KILLER) {
 			switch (action.getType()) {
 			case Action.SELECT_PERSON:
-				board.set(Person.DECEASED, action.getPosition());
+				board.setDeceased(true, action.getPosition());
+				if (board.getId(action.getPosition()) == inspectorId) {
+					endOfGame = true;
+				}
+				nDeceased++;
+				if (nDeceased == MAX_DECEASED) {
+					endOfGame = true;
+				}
 				lastAction = action;
 				action = null;
 				nextPlayer();
 				return;
 			case Action.PICK_EVIDENCE:
-				board.set(Person.INNOCENT, board.getPosition(killerId));
+				board.setInnocent(true, board.getPosition(killerId));
 				setKillerId();
 				lastAction = action;
 				action = null;
@@ -272,7 +286,7 @@ public class GameEngine {
 			}
 		} else {
 			if (isExonerate) {
-				board.set(Person.INNOCENT, action.getPosition());
+				board.setInnocent(true, board.getPosition(killerId));
 				lastAction = action;
 				action = null;
 				isExonerate = false;
@@ -280,7 +294,9 @@ public class GameEngine {
 			} else {
 				switch (action.getType()) {
 				case Action.SELECT_PERSON:
-					// TODO: end of game !!!
+					if (board.getId(action.getPosition()) == killerId) {
+						endOfGame = true;
+					}
 					break;
 				case Action.PICK_EVIDENCE:
 					addEvidenceToHand();
@@ -309,6 +325,20 @@ public class GameEngine {
 		} else {
 			processNextTurns();
 		}
+	}
+
+	public boolean isEndOfGame() {
+		return endOfGame;
+	}
+
+	public int getWinner() {
+		if (nDeceased == MAX_DECEASED) {
+			return TURN_KILLER;
+		}
+		if (board.get(board.getPosition(inspectorId)).isDeceased()) {
+			return TURN_KILLER;
+		}
+		return TURN_INSPECTOR;
 	}
 
 	public void nextPlayer() {
@@ -369,26 +399,6 @@ public class GameEngine {
 
 	public boolean isEvidence(int id) {
 		return evidenceHand.contains(id);
-	}
-
-	public void printEvidenceDeck() {
-		System.out.print("Deck: ");
-		for (Person p : evidenceDeck) {
-			System.out.print(p.getId() + ", ");
-		}
-		System.out.println("");
-	}
-
-	public void printEvidenceHand() {
-		System.out.print("Hand: ");
-		for (Integer p : evidenceHand) {
-			System.out.print(p + ", ");
-		}
-		System.out.println("");
-	}
-
-	public void printBoard() {
-		board.printBoard();
 	}
 
 	public Board getBoard() {
