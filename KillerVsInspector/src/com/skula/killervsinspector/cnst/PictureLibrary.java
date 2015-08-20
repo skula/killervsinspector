@@ -76,8 +76,8 @@ public class PictureLibrary {
 		this.map.put(R.drawable.shift_left, BitmapFactory.decodeResource(res, R.drawable.shift_left));
 		this.map.put(R.drawable.shift_right, BitmapFactory.decodeResource(res, R.drawable.shift_right));
 		
-		//this.map.put(R.drawable.shift_player, BitmapFactory.decodeResource(res, R.drawable.shift_player));
-		//this.map.put(R.drawable.shift_evidence, BitmapFactory.decodeResource(res, R.drawable.shift_evidence));
+		this.map.put(R.drawable.player, BitmapFactory.decodeResource(res, R.drawable.player));
+		this.map.put(R.drawable.evidence, BitmapFactory.decodeResource(res, R.drawable.evidence));
 	}
 
 	public Bitmap get(int id) {

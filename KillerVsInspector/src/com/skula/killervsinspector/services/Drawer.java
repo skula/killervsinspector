@@ -59,7 +59,7 @@ public class Drawer {
 				switch (b.get(j, i).getState()) {
 				case Person.SUSPECT:
 					if(engine.isEvidence(b.getId(j, i))){
-						//c.drawBitmap(lib.get(R.drawable.evidence), PERSON_RECT, r, paint);
+						c.drawBitmap(lib.get(R.drawable.evidence), PERSON_RECT, r, paint);
 					}
 					break;
 				case Person.INNOCENT:
@@ -72,12 +72,13 @@ public class Drawer {
 				
 				// draw player
 				if(engine.getToken() == GameEngine.TURN_KILLER){
+					int aa = engine.getKillerId();
 					if(b.getId(j, i) == engine.getKillerId()){
-						//c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
+						c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
 					}
 				}else{
 					if(b.getId(j, i) == engine.getInspectorId()){
-						//c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
+						c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
 					}
 				}
 				

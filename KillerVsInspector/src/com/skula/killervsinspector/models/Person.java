@@ -22,30 +22,30 @@ public class Person {
 		persons = new ArrayList<Person>();
 
 		persons.add(new Person(0, Person.SUSPECT, R.drawable.ernest_suspect, R.drawable.ernest_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.franklin_suspect, R.drawable.franklin_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.phoebe_suspect, R.drawable.phoebe_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.horatio_suspect, R.drawable.horatio_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.kristoph_suspect, R.drawable.kristoph_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.ryan_suspect, R.drawable.ryan_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.udstad_suspect, R.drawable.udstad_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.deidre_suspect, R.drawable.deidre_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.linus_suspect, R.drawable.linus_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.quinton_suspect, R.drawable.quinton_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.julian_suspect, R.drawable.julian_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.alyss_suspect, R.drawable.alyss_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.barrin_suspect, R.drawable.barrin_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.clive_suspect, R.drawable.clive_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.irma_suspect, R.drawable.irma_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.trevor_suspect, R.drawable.trevor_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.vladimir_suspect, R.drawable.vladimir_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.marion_suspect, R.drawable.marion_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.niel_suspect, R.drawable.niel_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.wilhelm_suspect, R.drawable.wilhelm_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.zachary_suspect, R.drawable.zachary_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.geneva_suspect, R.drawable.geneva_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.yvonne_suspect, R.drawable.yvonne_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.simon_suspect, R.drawable.simon_offside));
-		persons.add(new Person(0, Person.SUSPECT, R.drawable.ophelia_suspect, R.drawable.ophelia_offside));
+		persons.add(new Person(1, Person.SUSPECT, R.drawable.franklin_suspect, R.drawable.franklin_offside));
+		persons.add(new Person(2, Person.SUSPECT, R.drawable.phoebe_suspect, R.drawable.phoebe_offside));
+		persons.add(new Person(3, Person.SUSPECT, R.drawable.horatio_suspect, R.drawable.horatio_offside));
+		persons.add(new Person(4, Person.SUSPECT, R.drawable.kristoph_suspect, R.drawable.kristoph_offside));
+		persons.add(new Person(5, Person.SUSPECT, R.drawable.ryan_suspect, R.drawable.ryan_offside));
+		persons.add(new Person(6, Person.SUSPECT, R.drawable.udstad_suspect, R.drawable.udstad_offside));
+		persons.add(new Person(7, Person.SUSPECT, R.drawable.deidre_suspect, R.drawable.deidre_offside));
+		persons.add(new Person(8, Person.SUSPECT, R.drawable.linus_suspect, R.drawable.linus_offside));
+		persons.add(new Person(9, Person.SUSPECT, R.drawable.quinton_suspect, R.drawable.quinton_offside));
+		persons.add(new Person(10, Person.SUSPECT, R.drawable.julian_suspect, R.drawable.julian_offside));
+		persons.add(new Person(11, Person.SUSPECT, R.drawable.alyss_suspect, R.drawable.alyss_offside));
+		persons.add(new Person(12, Person.SUSPECT, R.drawable.barrin_suspect, R.drawable.barrin_offside));
+		persons.add(new Person(13, Person.SUSPECT, R.drawable.clive_suspect, R.drawable.clive_offside));
+		persons.add(new Person(14, Person.SUSPECT, R.drawable.irma_suspect, R.drawable.irma_offside));
+		persons.add(new Person(15, Person.SUSPECT, R.drawable.trevor_suspect, R.drawable.trevor_offside));
+		persons.add(new Person(16, Person.SUSPECT, R.drawable.vladimir_suspect, R.drawable.vladimir_offside));
+		persons.add(new Person(17, Person.SUSPECT, R.drawable.marion_suspect, R.drawable.marion_offside));
+		persons.add(new Person(18, Person.SUSPECT, R.drawable.niel_suspect, R.drawable.niel_offside));
+		persons.add(new Person(19, Person.SUSPECT, R.drawable.wilhelm_suspect, R.drawable.wilhelm_offside));
+		persons.add(new Person(20, Person.SUSPECT, R.drawable.zachary_suspect, R.drawable.zachary_offside));
+		persons.add(new Person(21, Person.SUSPECT, R.drawable.geneva_suspect, R.drawable.geneva_offside));
+		persons.add(new Person(22, Person.SUSPECT, R.drawable.yvonne_suspect, R.drawable.yvonne_offside));
+		persons.add(new Person(23, Person.SUSPECT, R.drawable.simon_suspect, R.drawable.simon_offside));
+		persons.add(new Person(24, Person.SUSPECT, R.drawable.ophelia_suspect, R.drawable.ophelia_offside));
 	}
 
 	public static void main(String arg[]) {
