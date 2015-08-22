@@ -48,6 +48,10 @@ public class GameEngine {
 		// bouchon
 		this.killerId = 12;
 		evidenceHand.add(18);
+		evidenceHand.add(20);
+		evidenceHand.add(15);
+		evidenceHand.add(5);
+		evidenceHand.add(4);
 	}
 
 	private boolean canProcessFirstTurn() {
@@ -416,4 +420,8 @@ public class GameEngine {
 	public int getInspectorId() {
 		return inspectorId;
 	}
+
+	public List<Integer> getEvidenceHand() {
+		return evidenceHand;
+	}	
 }
