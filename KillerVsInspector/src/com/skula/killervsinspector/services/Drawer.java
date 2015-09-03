@@ -17,11 +17,11 @@ public class Drawer {
 	private static final Rect H_SHIFT_RECT = new Rect(0, 0, SHIFT_WIDTH, SHIFT_HEIGHT);
 	private static final Rect V_SHIFT_RECT = new Rect(0, 0, SHIFT_HEIGHT, SHIFT_WIDTH);
 
-	private static final int PERSON_WIDTH = 107;
-	private static final int PERSON_HEIGHT = 142;
+	public static final int PERSON_WIDTH = 107;
+	public static final int PERSON_HEIGHT = 142;
 	
-	private static final int X0 = (800 - (5 * PERSON_WIDTH + 4 * SEPARATOR + 2 * SHIFT_WIDTH)) / 2 + SHIFT_WIDTH;
-	private static final int Y0 = 120;
+	public static final int X0 = (800 - (5 * PERSON_WIDTH + 4 * SEPARATOR + 2 * SHIFT_WIDTH)) / 2 + SHIFT_WIDTH;
+	public static final int Y0 = 120;
 
 	private static final Rect PERSON_RECT = new Rect(0, 0, PERSON_WIDTH, PERSON_HEIGHT);
 	private PictureLibrary lib;
@@ -43,9 +43,9 @@ public class Drawer {
 
 		paint.setColor(Color.RED);
 		paint.setTextSize(30f);
-		int w = lib.get(R.drawable.alyss_suspect).getWidth();
-		int h = lib.get(R.drawable.alyss_suspect).getHeight();
-		c.drawText("" + X0, 40, 40, paint);
+		int w = lib.get(R.drawable.btn_pick).getWidth();
+		int h = lib.get(R.drawable.btn_pick).getHeight();
+		c.drawText("" + w, 40, 40, paint);
 	}
 
 	public void drawPersons(Canvas c) {
@@ -120,9 +120,9 @@ public class Drawer {
 	}
 
 	public void drawButtons(Canvas c) {
-		c.drawBitmap(lib.get(R.drawable.btn_pick), new Rect(0, 0, 142, 142), new Rect(80, 1000, 80 + 142, 1000 + 142),
+		c.drawBitmap(lib.get(R.drawable.btn_pick), new Rect(0, 0, 142, 142), new Rect(SHIFT_WIDTH, 1000, SHIFT_WIDTH + 142, 1000 + 142),
 				paint);
-		c.drawBitmap(lib.get(R.drawable.btn_end), new Rect(0, 0, 142, 142), new Rect(600, 1000, 600 + 142, 1000 + 142),
+		c.drawBitmap(lib.get(R.drawable.btn_end), new Rect(0, 0, 142, 142), new Rect(800-SHIFT_WIDTH-142, 1000, 800-SHIFT_WIDTH, 1000 + 142),
 				paint);
 	}
 }
