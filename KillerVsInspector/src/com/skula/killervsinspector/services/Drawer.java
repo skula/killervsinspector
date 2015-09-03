@@ -11,14 +11,17 @@ import com.skula.killervsinspector.cnst.PictureLibrary;
 import com.skula.killervsinspector.models.Board;
 
 public class Drawer {
-	private static final int SEPARATOR = 20;
-	private static final int SHIFT_WIDTH = 71;
-	private static final int SHIFT_HEIGHT = 71;
+	public static final int SEPARATOR = 20;
+	public static final int SHIFT_WIDTH = 71;
+	public static final int SHIFT_HEIGHT = 71;
 	private static final Rect H_SHIFT_RECT = new Rect(0, 0, SHIFT_WIDTH, SHIFT_HEIGHT);
 	private static final Rect V_SHIFT_RECT = new Rect(0, 0, SHIFT_HEIGHT, SHIFT_WIDTH);
 
 	public static final int PERSON_WIDTH = 107;
 	public static final int PERSON_HEIGHT = 142;
+	
+	public static final int BUTTON_WIDTH = 142;
+	public static final int BUTTON_HEIGHT = 142;
 	
 	public static final int X0 = (800 - (5 * PERSON_WIDTH + 4 * SEPARATOR + 2 * SHIFT_WIDTH)) / 2 + SHIFT_WIDTH;
 	public static final int Y0 = 120;
@@ -34,21 +37,24 @@ public class Drawer {
 		this.lib = new PictureLibrary(res);
 	}
 
-	public void draw(Canvas c) {
+	public void draw(boolean waitForPlayer, Canvas c) {
 		paint.setColor(Color.WHITE);
 		c.drawRect(new Rect(0, 0, 800, 1200), paint);
-		drawPersons(c);
-		drawShiftButtons(c);
-		drawButtons(c);
+		drawPersons(waitForPlayer, c);
+		
+		if(!waitForPlayer){
+			drawShiftButtons(c);
+			drawButtons(c);
+		}
 
 		paint.setColor(Color.RED);
 		paint.setTextSize(30f);
 		int w = lib.get(R.drawable.btn_pick).getWidth();
 		int h = lib.get(R.drawable.btn_pick).getHeight();
-		c.drawText("" + w, 40, 40, paint);
+		//c.drawText("" + w, 40, 40, paint);
 	}
 
-	public void drawPersons(Canvas c) {
+	public void drawPersons(boolean waitForPlayer, Canvas c) {
 		Board b = engine.getBoard();
 		Rect r = null;
 		int x = X0;
@@ -65,22 +71,26 @@ public class Drawer {
 				if (b.get(j, i).isDeceased()) {
 					c.drawBitmap(lib.get(R.drawable.deceased), PERSON_RECT, r, paint);
 				}
-				if (b.get(j, i).isDeceased()) {
+				if (b.get(j, i).isInnocent()) {
 					c.drawBitmap(lib.get(R.drawable.innocent), PERSON_RECT, r, paint);
 				}
-				if (engine.isEvidence(b.getId(j, i))) {
-					c.drawBitmap(lib.get(R.drawable.evidence), PERSON_RECT, r, paint);
+				if(!waitForPlayer){
+					if (engine.isEvidence(b.getId(j, i))) {
+						c.drawBitmap(lib.get(R.drawable.evidence), PERSON_RECT, r, paint);
+					}
 				}
 
 				// draw player
-				if (engine.getToken() == GameEngine.TURN_KILLER) {
-					int aa = engine.getKillerId();
-					if (b.getId(j, i) == engine.getKillerId()) {
-						c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
-					}
-				} else {
-					if (b.getId(j, i) == engine.getInspectorId()) {
-						c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
+				if(!waitForPlayer){
+					if (engine.getToken() == GameEngine.TURN_KILLER) {
+						int aa = engine.getKillerId();
+						if (b.getId(j, i) == engine.getKillerId()) {
+							c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
+						}
+					} else {
+						if (b.getId(j, i) == engine.getInspectorId()) {
+							c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
+						}
 					}
 				}
 
@@ -108,7 +118,6 @@ public class Drawer {
 		y1 = Y0 + 40;
 		x = X0 - SHIFT_WIDTH;
 		int x2 = X0 + 5 * PERSON_WIDTH + 4 * SEPARATOR;
-		;
 		sep = PERSON_HEIGHT + SEPARATOR;
 		for (int i = 0; i < b.getnRows(); i++) {
 			c.drawBitmap(lib.get(R.drawable.shift_left), V_SHIFT_RECT, new Rect(x, y1, x + SHIFT_HEIGHT, y1
@@ -120,9 +129,10 @@ public class Drawer {
 	}
 
 	public void drawButtons(Canvas c) {
-		c.drawBitmap(lib.get(R.drawable.btn_pick), new Rect(0, 0, 142, 142), new Rect(SHIFT_WIDTH, 1000, SHIFT_WIDTH + 142, 1000 + 142),
-				paint);
-		c.drawBitmap(lib.get(R.drawable.btn_end), new Rect(0, 0, 142, 142), new Rect(800-SHIFT_WIDTH-142, 1000, 800-SHIFT_WIDTH, 1000 + 142),
-				paint);
+		if(!engine.isEndOfTurn()){
+			c.drawBitmap(lib.get(R.drawable.btn_pick), new Rect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT), new Rect(SHIFT_WIDTH, 1000, SHIFT_WIDTH + BUTTON_WIDTH, 1000 + BUTTON_HEIGHT), paint);
+		} else{
+			c.drawBitmap(lib.get(R.drawable.btn_end), new Rect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT), new Rect(800-SHIFT_WIDTH-BUTTON_WIDTH, 1000, 800-SHIFT_WIDTH, 1000 + BUTTON_HEIGHT), paint);
+		}
 	}
 }

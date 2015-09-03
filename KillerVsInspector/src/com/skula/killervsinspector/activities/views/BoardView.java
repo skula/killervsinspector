@@ -21,6 +21,7 @@ public class BoardView extends View {
 	private Drawer drawer;
 	private GameEngine ge;
 	private String msg;
+	private boolean waitForPlayer;
 
 	public BoardView(Context context) {
 		super(context);
@@ -29,6 +30,7 @@ public class BoardView extends View {
 		this.drawer = new Drawer(res, ge);
 		this.msg = "";
 		this.paint = new Paint();
+		this.waitForPlayer = false;
 	}
 
 	@Override
@@ -38,16 +40,23 @@ public class BoardView extends View {
 
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			Action act = getAction(x, y);
-			if (act != null) {
-				msg = act.toString();
-			} else {
-				msg = "VOID";
-			}
+			Action a = getAction(x, y);
+			msg = a.toString();
+			ge.setAction(a);
 			break;
 		case MotionEvent.ACTION_MOVE:
 			break;
 		case MotionEvent.ACTION_UP:
+			if (ge.getAction().getType() == Action.END_TURN) {
+				waitForPlayer = true;
+			} else if (ge.getAction().getType() == Action.CHANGE_PLAYER) {
+				ge.nextPlayer();
+				waitForPlayer = false;
+			} else if (ge.getAction().getType() != Action.NONE) {
+				// if(ge.canProcess()){
+				// ge.process();
+				// }
+			}
 			break;
 		}
 		invalidate();
@@ -55,30 +64,100 @@ public class BoardView extends View {
 	}
 
 	public Action getAction(int x, int y) {
-
-		return null;
-	}
-
-	public Position getArea(int x, int y) {
+		Action res = new Action();
 		Board b = ge.getBoard();
 		Rect r = null;
 		int x1 = Drawer.X0;
 		int y1 = Drawer.Y0;
-		for (int i = 0; i < b.getnRows(); i++) {
-			for (int j = 0; j < b.getnColumns(); j++) {
-				r = new Rect(x1, y1, x1 + Drawer.PERSON_WIDTH, y1 + Drawer.PERSON_HEIGHT);
-				if (r.contains(x, y)) {
-					return new Position(j, i);
+
+		if (!ge.isEndOfTurn()) {
+			// personnages
+			for (int i = 0; i < b.getnRows(); i++) {
+				for (int j = 0; j < b.getnColumns(); j++) {
+					r = new Rect(x1, y1, x1 + Drawer.PERSON_WIDTH, y1 + Drawer.PERSON_HEIGHT);
+					if (r.contains(x, y)) {
+						res.setType(Action.SELECT_PERSON);
+						res.setPosition(new Position(j, i));
+						return res;
+					}
+					x1 += Drawer.PERSON_WIDTH + Drawer.SEPARATOR;
 				}
+				y1 += Drawer.PERSON_HEIGHT + Drawer.SEPARATOR;
+				x1 = Drawer.X0;
+			}
+
+			// deplacements vertical de colonnes
+			x1 = Drawer.X0 + (Drawer.PERSON_WIDTH - Drawer.SHIFT_WIDTH) / 2;
+			y1 = Drawer.Y0 - Drawer.SHIFT_WIDTH;
+			int y2 = Drawer.Y0 + 5 * Drawer.PERSON_HEIGHT + 4 * Drawer.SEPARATOR;
+			int sep = Drawer.PERSON_WIDTH + Drawer.SEPARATOR;
+			for (int i = 0; i < b.getnColumns(); i++) {
+				r = new Rect(x1, y1, x1 + Drawer.SHIFT_WIDTH, y1 + Drawer.SHIFT_HEIGHT);
+				if (r.contains(x, y)) {
+					res.setType(Action.SHIFT_UP);
+					res.setPosition(new Position(i, 0));
+					return res;
+				}
+				r = new Rect(x1, y2, x1 + Drawer.SHIFT_WIDTH, y2 + Drawer.SHIFT_HEIGHT);
+				if (r.contains(x, y)) {
+					res.setType(Action.SHIFT_DOWN);
+					res.setPosition(new Position(i, 0));
+					return res;
+				}
+				x1 += sep;
+			}
+
+			// deplacements horizontal de colonnes
+			y1 = Drawer.Y0 + 40;
+			x1 = Drawer.X0 - Drawer.SHIFT_WIDTH;
+			int x2 = Drawer.X0 + 5 * Drawer.PERSON_WIDTH + 4 * Drawer.SEPARATOR;
+			sep = Drawer.PERSON_HEIGHT + Drawer.SEPARATOR;
+			for (int i = 0; i < b.getnRows(); i++) {
+				r = new Rect(x1, y1, x1 + Drawer.SHIFT_HEIGHT, y1 + Drawer.SHIFT_WIDTH);
+				if (r.contains(x, y)) {
+					res.setType(Action.SHIFT_LEFT);
+					res.setPosition(new Position(0, i));
+					return res;
+				}
+				r = new Rect(x2, y1, x2 + Drawer.SHIFT_HEIGHT, y1 + Drawer.SHIFT_WIDTH);
+				if (r.contains(x, y)) {
+					res.setType(Action.SHIFT_RIGHT);
+					res.setPosition(new Position(0, i));
+					return res;
+				}
+				y1 += sep;
+			}
+
+			// piocher une carte
+			r = new Rect(Drawer.SHIFT_WIDTH, 1000, Drawer.SHIFT_WIDTH + Drawer.SHIFT_WIDTH, 1000 + Drawer.BUTTON_HEIGHT);
+			if (r.contains(x, y)) {
+				res.setType(Action.PICK_EVIDENCE);
+				res.setPosition(null);
+				return res;
+			}
+		} else {
+			// finir le tour
+			r = new Rect(800 - Drawer.SHIFT_WIDTH - Drawer.BUTTON_WIDTH, 1000, 800 - Drawer.SHIFT_WIDTH,
+					1000 + Drawer.BUTTON_HEIGHT);
+			if (r.contains(x, y)) {
+				res.setType(Action.END_TURN);
+				res.setPosition(null);
+				return res;
 			}
 		}
-		return null;
+
+		// changement de joueur
+		// TODO: image de changement de joueur
+
+		res.setType(Action.NONE);
+		return res;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		drawer.draw(canvas);
+		drawer.draw(waitForPlayer, canvas);
 		paint.setColor(Color.RED);
-		canvas.drawText(msg, 10, 10, paint);
+		paint.setTextSize(30f);
+		canvas.drawText(msg, 20, 30, paint);
 	}
 }

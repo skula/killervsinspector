@@ -28,7 +28,8 @@ public class GameEngine {
 	private boolean isFirstTurn;
 	private boolean endOfGame;
 	private boolean isExonerate;
-
+	private boolean endOfTurn;
+	
 	public GameEngine() {
 		// Person.shufflePersons();
 		this.board = new Board(Person.getAllPersons());
@@ -44,6 +45,7 @@ public class GameEngine {
 		this.inspectorId = -1;
 		this.isExonerate = false;
 		this.nDeceased = 0;
+		this.endOfTurn = false;
 
 		// bouchon
 		this.killerId = 12;
@@ -216,7 +218,7 @@ public class GameEngine {
 				nDeceased++;
 				lastAction = action;
 				action = null;
-				nextPlayer();
+				endOfTurn = true;
 			}
 		} else {
 			if (evidenceHand.isEmpty()) {
@@ -230,7 +232,7 @@ public class GameEngine {
 				lastAction = action;
 				action = null;
 				isFirstTurn = false;
-				nextPlayer();
+				endOfTurn = true;
 			}
 		}
 	}
@@ -242,25 +244,25 @@ public class GameEngine {
 			board.shiftColumn(action.getPosition().getX(), Action.SHIFT_DOWN);
 			lastAction = action;
 			this.action = null;
-			nextPlayer();
+			endOfTurn = true;
 			return;
 		case Action.SHIFT_UP:
 			board.shiftColumn(action.getPosition().getX(), Action.SHIFT_UP);
 			lastAction = action;
 			this.action = null;
-			nextPlayer();
+			endOfTurn = true;
 			return;
 		case Action.SHIFT_LEFT:
 			board.shiftRow(action.getPosition().getY(), Action.SHIFT_LEFT);
 			lastAction = action;
 			this.action = null;
-			nextPlayer();
+			endOfTurn = true;
 			return;
 		case Action.SHIFT_RIGHT:
 			board.shiftRow(action.getPosition().getY(), Action.SHIFT_RIGHT);
 			lastAction = action;
 			this.action = null;
-			nextPlayer();
+			endOfTurn = true;
 			return;
 		}
 
@@ -278,29 +280,31 @@ public class GameEngine {
 				}
 				lastAction = action;
 				action = null;
-				nextPlayer();
+				endOfTurn = true;
 				return;
 			case Action.PICK_EVIDENCE:
 				board.setInnocent(true, board.getPosition(killerId));
 				setKillerId();
 				lastAction = action;
 				action = null;
-				nextPlayer();
+				endOfTurn = true;
 				return;
 			}
 		} else {
 			if (isExonerate) {
-				board.setInnocent(true, board.getPosition(killerId));
+				// TODO: a vérifier
+				board.setInnocent(true, action.getPosition());
 				lastAction = action;
 				action = null;
 				isExonerate = false;
-				nextPlayer();
+				endOfTurn = true;
 			} else {
 				switch (action.getType()) {
 				case Action.SELECT_PERSON:
 					if (board.getId(action.getPosition()) == killerId) {
 						endOfGame = true;
 					}
+					endOfTurn = true;
 					break;
 				case Action.PICK_EVIDENCE:
 					addEvidenceToHand();
@@ -335,6 +339,10 @@ public class GameEngine {
 		return endOfGame;
 	}
 
+	public boolean isEndOfTurn() {
+		return endOfTurn;
+	}
+
 	public int getWinner() {
 		if (nDeceased == MAX_DECEASED) {
 			return TURN_KILLER;
@@ -346,6 +354,7 @@ public class GameEngine {
 	}
 
 	public void nextPlayer() {
+		this.endOfTurn = false;
 		this.token = token == TURN_INSPECTOR ? TURN_KILLER : TURN_INSPECTOR;
 	}
 
@@ -423,5 +432,13 @@ public class GameEngine {
 
 	public List<Integer> getEvidenceHand() {
 		return evidenceHand;
-	}	
+	}
+
+	public Action getAction() {
+		return action;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
+	}
 }
