@@ -45,15 +45,27 @@ public class Drawer {
 		if(!waitForPlayer){
 			drawShiftButtons(c);
 			drawButtons(c);
+		}else{
+			drawWaitPlayerPanel(c);
 		}
 
 		paint.setColor(Color.RED);
 		paint.setTextSize(30f);
 		int w = lib.get(R.drawable.btn_pick).getWidth();
 		int h = lib.get(R.drawable.btn_pick).getHeight();
-		//c.drawText("" + w, 40, 40, paint);
+		
+		if(engine.getToken()==GameEngine.TURN_INSPECTOR){
+			c.drawText("INSPECTEUR" , 400, 40, paint);
+		}else{
+			c.drawText("TUEUR" , 400, 40, paint);
+		}
 	}
 
+	public void drawWaitPlayerPanel(Canvas c) {
+		paint.setColor(Color.RED);
+		c.drawRect(new Rect(320, 1000, 480, 1160), paint);
+	}
+	
 	public void drawPersons(boolean waitForPlayer, Canvas c) {
 		Board b = engine.getBoard();
 		Rect r = null;

@@ -20,11 +20,11 @@ public class Board {
 		}
 
 		// bouchons
-		setDeceased(true, 0, 0);
-		setDeceased(true, 1, 0);
-		setDeceased(true, 2, 0);
-		setDeceased(true, 3, 0);
-		setDeceased(true, 4, 0);
+		//setDeceased(true, 0, 0);
+		//setDeceased(true, 1, 0);
+		//setDeceased(true, 2, 0);
+		//setDeceased(true, 3, 0);
+		//setDeceased(true, 4, 0);
 	}
 
 	public int getId(int i, int j) {
@@ -48,9 +48,19 @@ public class Board {
 	}
 
 	public boolean isAdjacent(int xSrc, int ySrc, int xDest, int yDest) {
-		return (xDest != xSrc || yDest != ySrc)
-				&& (xDest >= xSrc - 1 && xDest <= xSrc + 1)
-				&& (yDest >= ySrc - 1 && yDest <= ySrc + 1);
+		if(xSrc == xDest && ySrc == yDest){
+			return false;
+		}
+
+		if(xDest < xSrc - 1 || xDest > xSrc + 1){
+			return false;
+		}
+
+		if(yDest < ySrc - 1 || yDest > ySrc + 1){
+			return false;
+		}
+		
+		return true;
 	}
 
 	public void shiftColumn(int colId, int dir) {

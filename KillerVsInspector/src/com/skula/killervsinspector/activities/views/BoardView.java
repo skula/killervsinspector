@@ -53,9 +53,9 @@ public class BoardView extends View {
 				ge.nextPlayer();
 				waitForPlayer = false;
 			} else if (ge.getAction().getType() != Action.NONE) {
-				// if(ge.canProcess()){
-				// ge.process();
-				// }
+				if(ge.canProcess()){
+					ge.process();
+				}
 			}
 			break;
 		}
@@ -147,6 +147,14 @@ public class BoardView extends View {
 		}
 
 		// changement de joueur
+		if(waitForPlayer){
+			r = new Rect(320, 1000, 480, 1160);
+			if (r.contains(x, y)) {
+				res.setType(Action.CHANGE_PLAYER);
+				res.setPosition(null);
+				return res;
+			}
+		}
 		// TODO: image de changement de joueur
 
 		res.setType(Action.NONE);

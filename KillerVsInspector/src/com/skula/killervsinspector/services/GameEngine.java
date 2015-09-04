@@ -2,6 +2,7 @@ package com.skula.killervsinspector.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.skula.killervsinspector.models.Action;
 import com.skula.killervsinspector.models.Board;
@@ -41,49 +42,41 @@ public class GameEngine {
 		this.action = null;
 		this.lastAction = null;
 		this.isFirstTurn = true;
-		this.killerId = -1;
+		setKillerId();
 		this.inspectorId = -1;
 		this.isExonerate = false;
 		this.nDeceased = 0;
 		this.endOfTurn = false;
 
 		// bouchon
-		this.killerId = 12;
-		evidenceHand.add(18);
-		evidenceHand.add(20);
-		evidenceHand.add(15);
-		evidenceHand.add(5);
-		evidenceHand.add(4);
+		//this.killerId = 12;
+		//evidenceHand.add(18);
+		//evidenceHand.add(20);
+		//evidenceHand.add(15);
+		//evidenceHand.add(5);
+		//evidenceHand.add(4);
 	}
 
 	private boolean canProcessFirstTurn() {
 		if (token == TURN_KILLER) {
-			if (killerId == -1) {
-				if (!action.equals(Action.PICK_EVIDENCE)) {
-					this.action = null;
-					return false;
-				}
-				return true;
-			} else {
-				if (!action.equals(Action.SELECT_PERSON)) {
-					this.action = null;
-					return false;
-				}
-				if (!isAdjacentPerson(killerId, action.getPosition())) {
-					this.action = null;
-					return false;
-				}
-				return true;
+			if (action.getType() != Action.SELECT_PERSON) {
+				this.action = null;
+				return false;
 			}
+			if (!isAdjacentPerson(killerId, action.getPosition())) {
+				this.action = null;
+				return false;
+			}
+			return true;
 		} else {
 			if (evidenceHand.isEmpty()) {
-				if (!action.equals(Action.PICK_EVIDENCE)) {
+				if (action.getType() != Action.PICK_EVIDENCE) {
 					this.action = null;
 					return false;
 				}
 				return true;
 			} else {
-				if (!action.equals(Action.SELECT_PERSON)) {
+				if (action.getType() != Action.SELECT_PERSON) {
 					this.action = null;
 					return false;
 				}
