@@ -161,7 +161,7 @@ public class Board {
 	}
 
 	public void setInnocent(boolean innocent, int x, int y) {
-		board[x][y].setDeceased(innocent);
+		board[x][y].setInnocent(innocent);
 	}
 
 	public void setDeceased(boolean deceased, Position p) {

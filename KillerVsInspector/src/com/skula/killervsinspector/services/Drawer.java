@@ -86,7 +86,7 @@ public class Drawer {
 				if (b.get(j, i).isInnocent()) {
 					c.drawBitmap(lib.get(R.drawable.innocent), PERSON_RECT, r, paint);
 				}
-				if(!waitForPlayer){
+				if(!waitForPlayer && engine.getToken() == GameEngine.TURN_INSPECTOR){
 					if (engine.isEvidence(b.getId(j, i))) {
 						c.drawBitmap(lib.get(R.drawable.evidence), PERSON_RECT, r, paint);
 					}

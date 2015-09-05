@@ -221,7 +221,16 @@ public class GameEngine {
 				this.action = null;
 			} else {
 				inspectorId = board.getId(action.getPosition());
-				evidenceHand.remove(inspectorId);
+				//evidenceHand.remove(inspectorId);
+				int cpt = 0;
+				for(Integer i: evidenceHand){
+					if(i == inspectorId){
+						break;
+					}
+					cpt++;
+				}
+				evidenceHand.remove(cpt);
+
 				lastAction = action;
 				action = null;
 				isFirstTurn = false;
@@ -327,6 +336,13 @@ public class GameEngine {
 			processNextTurns();
 		}
 	}
+	
+	public void buildEvidenceHand(){
+		evidenceHand.add(evidenceDeck.remove(0).getId());
+		evidenceHand.add(evidenceDeck.remove(0).getId());
+		evidenceHand.add(evidenceDeck.remove(0).getId());
+		evidenceHand.add(evidenceDeck.remove(0).getId());
+	}
 
 	public boolean isEndOfGame() {
 		return endOfGame;
@@ -352,7 +368,13 @@ public class GameEngine {
 	}
 
 	public boolean canBeExonerate(Position p) {
-		return evidenceHand.contains(board.getId(p.getX(), p.getY()));
+		int id = board.getId(p.getX(), p.getY());
+		for(Integer tmp : evidenceHand){
+			if(tmp == id){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isInspector(int x, int y) {

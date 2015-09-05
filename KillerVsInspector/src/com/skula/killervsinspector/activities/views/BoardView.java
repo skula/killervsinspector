@@ -52,6 +52,9 @@ public class BoardView extends View {
 			} else if (ge.getAction().getType() == Action.CHANGE_PLAYER) {
 				ge.nextPlayer();
 				waitForPlayer = false;
+				if(ge.getInspectorId() == -1){
+					ge.buildEvidenceHand();
+				}
 			} else if (ge.getAction().getType() != Action.NONE) {
 				if(ge.canProcess()){
 					ge.process();
