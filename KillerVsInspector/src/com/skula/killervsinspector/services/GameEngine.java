@@ -40,7 +40,7 @@ public class GameEngine {
 
 		this.token = TURN_KILLER;
 		this.action = null;
-		this.lastAction = null;
+		this.lastAction = new Action(Action.NONE, new Position());
 		this.isFirstTurn = true;
 		setKillerId();
 		this.inspectorId = -1;
@@ -348,6 +348,10 @@ public class GameEngine {
 		return endOfGame;
 	}
 
+	public boolean isFirstTurn() {
+		return isFirstTurn;
+	}
+
 	public boolean isEndOfTurn() {
 		return endOfTurn;
 	}
@@ -455,5 +459,9 @@ public class GameEngine {
 
 	public void setAction(Action action) {
 		this.action = action;
+	}
+
+	public Action getLastAction() {
+		return lastAction;
 	}
 }

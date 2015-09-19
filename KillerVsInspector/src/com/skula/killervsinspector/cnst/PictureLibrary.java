@@ -76,8 +76,14 @@ public class PictureLibrary {
 		this.map.put(R.drawable.shift_left, BitmapFactory.decodeResource(res, R.drawable.shift_left));
 		this.map.put(R.drawable.shift_right, BitmapFactory.decodeResource(res, R.drawable.shift_right));
 		
+		this.map.put(R.drawable.shift_up_disabled, BitmapFactory.decodeResource(res, R.drawable.shift_up_disabled));
+		this.map.put(R.drawable.shift_down_disabled, BitmapFactory.decodeResource(res, R.drawable.shift_down_disabled));
+		this.map.put(R.drawable.shift_left_disabled, BitmapFactory.decodeResource(res, R.drawable.shift_left_disabled));
+		this.map.put(R.drawable.shift_right_disabled, BitmapFactory.decodeResource(res, R.drawable.shift_right_disabled));
+		
 		this.map.put(R.drawable.player, BitmapFactory.decodeResource(res, R.drawable.player));
 		this.map.put(R.drawable.evidence, BitmapFactory.decodeResource(res, R.drawable.evidence));
+		this.map.put(R.drawable.near_clue, BitmapFactory.decodeResource(res, R.drawable.near_clue));
 
 		this.map.put(R.drawable.btn_end, BitmapFactory.decodeResource(res, R.drawable.btn_end));
 		this.map.put(R.drawable.btn_pick, BitmapFactory.decodeResource(res, R.drawable.btn_pick));
