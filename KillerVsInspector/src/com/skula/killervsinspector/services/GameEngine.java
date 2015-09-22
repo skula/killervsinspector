@@ -28,8 +28,12 @@ public class GameEngine {
 	private int nDeceased;
 	private boolean isFirstTurn;
 	private boolean endOfGame;
-	private boolean isExonerate;
+	private boolean isExonerating;
+	private Position cluePosition;
+	private boolean hasClue;
 	private boolean endOfTurn;
+	
+	private String log;
 	
 	public GameEngine() {
 		// Person.shufflePersons();
@@ -44,10 +48,13 @@ public class GameEngine {
 		this.isFirstTurn = true;
 		setKillerId();
 		this.inspectorId = -1;
-		this.isExonerate = false;
+		this.isExonerating = false;
+		this.hasClue = false;
+		this.cluePosition = null;
 		this.nDeceased = 0;
 		this.endOfTurn = false;
 
+		this.log = "";
 		// bouchon
 		//this.killerId = 12;
 		//evidenceHand.add(18);
@@ -162,7 +169,7 @@ public class GameEngine {
 				return false;
 			}
 		} else {
-			if (isExonerate) {
+			if (isExonerating) {
 				if (action.getType() != Action.SELECT_PERSON) {
 					this.action = null;
 					return false;
@@ -293,12 +300,14 @@ public class GameEngine {
 				return;
 			}
 		} else {
-			if (isExonerate) {
-				// TODO: a vérifier
+			if (isExonerating) {
 				board.setInnocent(true, action.getPosition());
+				evidenceHand.remove(new Integer(board.getId(action.getPosition())));
 				lastAction = action;
 				action = null;
-				isExonerate = false;
+				isExonerating = false;
+				hasClue = true;
+				cluePosition = lastAction.getPosition();
 				endOfTurn = true;
 			} else {
 				switch (action.getType()) {
@@ -312,7 +321,7 @@ public class GameEngine {
 					addEvidenceToHand();
 					lastAction = action;
 					action = null;
-					isExonerate = true;
+					isExonerating = true;
 					break;
 				default:
 					break;
@@ -368,6 +377,8 @@ public class GameEngine {
 
 	public void nextPlayer() {
 		this.endOfTurn = false;
+		this.hasClue = false;
+		this.cluePosition = null;
 		this.token = token == TURN_INSPECTOR ? TURN_KILLER : TURN_INSPECTOR;
 	}
 
@@ -391,6 +402,10 @@ public class GameEngine {
 
 	public boolean isKillerClose(int x, int y) {
 		return isAdjacentPerson(killerId, x, y);
+	}
+
+	public boolean isKillerClose(Position pos) {
+		return isAdjacentPerson(killerId, pos.getX(), pos.getY());
 	}
 
 	private void setKillerId() {
@@ -463,5 +478,17 @@ public class GameEngine {
 
 	public Action getLastAction() {
 		return lastAction;
+	}
+	
+	public boolean hasClue(){
+		return hasClue;
+	}
+	
+	public Position getCluePosition(){
+		return cluePosition;
+	}	
+	
+	public String getLog(){
+		return log;
 	}
 }

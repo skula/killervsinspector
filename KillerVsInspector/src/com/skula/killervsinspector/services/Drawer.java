@@ -10,6 +10,7 @@ import com.skula.killervsinspector.R;
 import com.skula.killervsinspector.cnst.PictureLibrary;
 import com.skula.killervsinspector.models.Action;
 import com.skula.killervsinspector.models.Board;
+import com.skula.killervsinspector.models.Position;
 
 public class Drawer {
 	public static final int SEPARATOR = 20;
@@ -60,6 +61,8 @@ public class Drawer {
 		} else {
 			c.drawText("TUEUR", 400, 40, paint);
 		}
+
+		c.drawText(engine.getLog(), 1000, 300, paint);
 	}
 
 	public void drawWaitPlayerPanel(Canvas c) {
@@ -111,6 +114,31 @@ public class Drawer {
 			}
 			y += PERSON_HEIGHT + SEPARATOR;
 			x = X0;
+		}
+
+		// indice sur la position du tueur en cas d'exoneration
+		if (engine.getToken() == GameEngine.TURN_INSPECTOR) {
+			if (engine.hasClue()) {
+				if (engine.isKillerClose(engine.getCluePosition())) {
+					Position tmp = engine.getCluePosition();
+					for (int j = -1; j <= 1; j++) {
+						for (int i = -1; i <= 1; i++) {
+							if (tmp.getX() + i >= 0 && tmp.getX() + i < b.getnColumns() && tmp.getY() + j >= 0 && tmp.getY() + j < b.getnRows()) {
+								if (!(j == 0 && i == 0) && !b.get(tmp.getX() + i, tmp.getY() + j).isDeceased() && !b.get(tmp.getX() + i, tmp.getY() + j).isInnocent()) {
+									x = X0 + (PERSON_WIDTH + SEPARATOR) * (tmp.getX() + i);
+									y = Y0 + (PERSON_HEIGHT + SEPARATOR) * (tmp.getY() + j);
+									r = new Rect(x, y, x + PERSON_WIDTH, y + PERSON_HEIGHT);
+									c.drawBitmap(lib.get(R.drawable.near_clue), PERSON_RECT, r, paint);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		// indice sur la position de l'inspecteur
+		else {
+
 		}
 	}
 

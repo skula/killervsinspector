@@ -169,6 +169,6 @@ public class BoardView extends View {
 		drawer.draw(waitForPlayer, canvas);
 		paint.setColor(Color.RED);
 		paint.setTextSize(30f);
-		canvas.drawText(msg, 20, 30, paint);
+		canvas.drawText(msg, 20, 40, paint);
 	}
 }
