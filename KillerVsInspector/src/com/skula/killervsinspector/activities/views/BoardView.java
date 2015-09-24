@@ -132,7 +132,7 @@ public class BoardView extends View {
 			}
 
 			// piocher une carte
-			r = new Rect(Drawer.SHIFT_WIDTH, 1000, Drawer.SHIFT_WIDTH + Drawer.SHIFT_WIDTH, 1000 + Drawer.BUTTON_HEIGHT);
+			r = new Rect(Drawer.SHIFT_WIDTH, 1000, Drawer.SHIFT_WIDTH + Drawer.BUTTON_WIDTH, 1000 + Drawer.BUTTON_HEIGHT);
 			if (r.contains(x, y)) {
 				res.setType(Action.PICK_EVIDENCE);
 				res.setPosition(null);
@@ -151,7 +151,7 @@ public class BoardView extends View {
 
 		// changement de joueur
 		if(waitForPlayer){
-			r = new Rect(320, 1000, 480, 1160);
+			r = new Rect(325, 970, 467, 1112);
 			if (r.contains(x, y)) {
 				res.setType(Action.CHANGE_PLAYER);
 				res.setPosition(null);

@@ -53,7 +53,7 @@ public class Drawer {
 
 		paint.setColor(Color.RED);
 		paint.setTextSize(30f);
-		int w = lib.get(R.drawable.btn_pick).getWidth();
+		int w = lib.get(R.drawable.inspector_turn).getWidth();
 		int h = lib.get(R.drawable.btn_pick).getHeight();
 
 		if (engine.getToken() == GameEngine.TURN_INSPECTOR) {
@@ -65,9 +65,12 @@ public class Drawer {
 		c.drawText(engine.getLog(), 1000, 300, paint);
 	}
 
-	public void drawWaitPlayerPanel(Canvas c) {
-		paint.setColor(Color.RED);
-		c.drawRect(new Rect(320, 1000, 480, 1160), paint);
+	private void drawWaitPlayerPanel(Canvas c) {
+		if(engine.getToken() == GameEngine.TURN_INSPECTOR){
+			c.drawBitmap(lib.get(R.drawable.killer_turn), new Rect(0, 0, 142, 142), new Rect(325, 970, 467, 1112), paint);
+		}else{
+			c.drawBitmap(lib.get(R.drawable.inspector_turn), new Rect(0, 0, 142, 142), new Rect(325, 970, 467, 1112), paint);
+		}
 	}
 
 	public void drawPersons(boolean waitForPlayer, Canvas c) {
