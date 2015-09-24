@@ -289,6 +289,12 @@ public class GameEngine {
 				}
 				lastAction = action;
 				action = null;
+				
+				if(isInspectorClose(lastAction.getPosition())){
+					hasClue = true;
+					cluePosition = lastAction.getPosition();
+				}
+				
 				endOfTurn = true;
 				return;
 			case Action.PICK_EVIDENCE:
@@ -306,8 +312,10 @@ public class GameEngine {
 				lastAction = action;
 				action = null;
 				isExonerating = false;
-				hasClue = true;
-				cluePosition = lastAction.getPosition();
+				if(isKillerClose(lastAction.getPosition())){
+					hasClue = true;
+					cluePosition = lastAction.getPosition();
+				}
 				endOfTurn = true;
 			} else {
 				switch (action.getType()) {
@@ -406,6 +414,10 @@ public class GameEngine {
 
 	public boolean isKillerClose(Position pos) {
 		return isAdjacentPerson(killerId, pos.getX(), pos.getY());
+	}
+
+	public boolean isInspectorClose(Position pos) {
+		return isAdjacentPerson(inspectorId, pos.getX(), pos.getY());
 	}
 
 	private void setKillerId() {

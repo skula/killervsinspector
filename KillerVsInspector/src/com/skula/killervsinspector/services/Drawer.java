@@ -119,17 +119,15 @@ public class Drawer {
 		// indice sur la position du tueur en cas d'exoneration
 		if (engine.getToken() == GameEngine.TURN_INSPECTOR) {
 			if (engine.hasClue()) {
-				if (engine.isKillerClose(engine.getCluePosition())) {
-					Position tmp = engine.getCluePosition();
-					for (int j = -1; j <= 1; j++) {
-						for (int i = -1; i <= 1; i++) {
-							if (tmp.getX() + i >= 0 && tmp.getX() + i < b.getnColumns() && tmp.getY() + j >= 0 && tmp.getY() + j < b.getnRows()) {
-								if (!(j == 0 && i == 0) && !b.get(tmp.getX() + i, tmp.getY() + j).isDeceased() && !b.get(tmp.getX() + i, tmp.getY() + j).isInnocent()) {
-									x = X0 + (PERSON_WIDTH + SEPARATOR) * (tmp.getX() + i);
-									y = Y0 + (PERSON_HEIGHT + SEPARATOR) * (tmp.getY() + j);
-									r = new Rect(x, y, x + PERSON_WIDTH, y + PERSON_HEIGHT);
-									c.drawBitmap(lib.get(R.drawable.near_clue), PERSON_RECT, r, paint);
-								}
+				Position tmp = engine.getCluePosition();
+				for (int j = -1; j <= 1; j++) {
+					for (int i = -1; i <= 1; i++) {
+						if (tmp.getX() + i >= 0 && tmp.getX() + i < b.getnColumns() && tmp.getY() + j >= 0 && tmp.getY() + j < b.getnRows()) {
+							if (!(j == 0 && i == 0) && !b.get(tmp.getX() + i, tmp.getY() + j).isDeceased() && !b.get(tmp.getX() + i, tmp.getY() + j).isInnocent()) {
+								x = X0 + (PERSON_WIDTH + SEPARATOR) * (tmp.getX() + i);
+								y = Y0 + (PERSON_HEIGHT + SEPARATOR) * (tmp.getY() + j);
+								r = new Rect(x, y, x + PERSON_WIDTH, y + PERSON_HEIGHT);
+								c.drawBitmap(lib.get(R.drawable.near_clue), PERSON_RECT, r, paint);
 							}
 						}
 					}
@@ -138,7 +136,21 @@ public class Drawer {
 		}
 		// indice sur la position de l'inspecteur
 		else {
-
+			if (engine.hasClue()) {
+				Position tmp = engine.getCluePosition();
+				for (int j = -1; j <= 1; j++) {
+					for (int i = -1; i <= 1; i++) {
+						if (tmp.getX() + i >= 0 && tmp.getX() + i < b.getnColumns() && tmp.getY() + j >= 0 && tmp.getY() + j < b.getnRows()) {
+							if (!(j == 0 && i == 0) && !b.get(tmp.getX() + i, tmp.getY() + j).isDeceased() && !b.get(tmp.getX() + i, tmp.getY() + j).isInnocent()) {
+								x = X0 + (PERSON_WIDTH + SEPARATOR) * (tmp.getX() + i);
+								y = Y0 + (PERSON_HEIGHT + SEPARATOR) * (tmp.getY() + j);
+								r = new Rect(x, y, x + PERSON_WIDTH, y + PERSON_HEIGHT);
+								c.drawBitmap(lib.get(R.drawable.near_clue), PERSON_RECT, r, paint);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
