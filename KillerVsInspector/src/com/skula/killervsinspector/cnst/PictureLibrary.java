@@ -90,6 +90,8 @@ public class PictureLibrary {
 
 		this.map.put(R.drawable.inspector_turn, BitmapFactory.decodeResource(res, R.drawable.inspector_turn));
 		this.map.put(R.drawable.killer_turn, BitmapFactory.decodeResource(res, R.drawable.killer_turn));
+
+		this.map.put(R.drawable.background, BitmapFactory.decodeResource(res, R.drawable.background));
 	}
 
 	public Bitmap get(int id) {

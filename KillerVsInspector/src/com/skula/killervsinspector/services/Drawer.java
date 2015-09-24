@@ -41,7 +41,8 @@ public class Drawer {
 
 	public void draw(boolean waitForPlayer, Canvas c) {
 		paint.setColor(Color.WHITE);
-		c.drawRect(new Rect(0, 0, 800, 1200), paint);
+		//c.drawRect(new Rect(0, 0, 800, 1200), paint);
+		c.drawBitmap(lib.get(R.drawable.background), new Rect(0, 0, 768, 1024), new Rect(0, 0, 800, 1280), paint);
 		drawPersons(waitForPlayer, c);
 
 		if (!waitForPlayer) {
