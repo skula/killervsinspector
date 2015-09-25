@@ -19,6 +19,7 @@ public class GameEngine {
 	private List<Integer> evidenceHand;
 
 	private int token;
+	private int winnerId;
 	private int killerId;
 	private int inspectorId;
 
@@ -185,8 +186,10 @@ public class GameEngine {
 				switch (action.getType()) {
 				case Action.SELECT_PERSON:
 					if (!isAdjacentPerson(inspectorId, action.getPosition())) {
-						this.action = null;
-						return false;
+						if(board.get(action.getPosition()).getId() != inspectorId){
+							this.action = null;
+							return false;
+						}
 					}
 
 					if (board.get(action.getPosition()).isDeceased()
@@ -280,12 +283,11 @@ public class GameEngine {
 			switch (action.getType()) {
 			case Action.SELECT_PERSON:
 				board.setDeceased(true, action.getPosition());
-				if (board.getId(action.getPosition()) == inspectorId) {
-					endOfGame = true;
-				}
+				
 				nDeceased++;
-				if (nDeceased == MAX_DECEASED) {
+				if (nDeceased == MAX_DECEASED || isInspector(action.getPosition())) {
 					endOfGame = true;
+					winnerId = TURN_KILLER;
 				}
 				lastAction = action;
 				action = null;
@@ -322,6 +324,7 @@ public class GameEngine {
 				case Action.SELECT_PERSON:
 					if (board.getId(action.getPosition()) == killerId) {
 						endOfGame = true;
+						winnerId = TURN_INSPECTOR;
 					}
 					endOfTurn = true;
 					break;
@@ -373,16 +376,6 @@ public class GameEngine {
 		return endOfTurn;
 	}
 
-	public int getWinner() {
-		if (nDeceased == MAX_DECEASED) {
-			return TURN_KILLER;
-		}
-		if (board.get(board.getPosition(inspectorId)).isDeceased()) {
-			return TURN_KILLER;
-		}
-		return TURN_INSPECTOR;
-	}
-
 	public void nextPlayer() {
 		this.endOfTurn = false;
 		this.hasClue = false;
@@ -402,6 +395,10 @@ public class GameEngine {
 
 	public boolean isInspector(int x, int y) {
 		return board.getId(x, y) == inspectorId;
+	}
+
+	public boolean isInspector(Position p) {
+		return board.getId(p.getX(), p.getY()) == inspectorId;
 	}
 
 	public boolean isKiller(int x, int y) {
@@ -502,5 +499,9 @@ public class GameEngine {
 	
 	public String getLog(){
 		return log;
+	}
+	
+	public int getWinner(){
+		return winnerId;
 	}
 }

@@ -47,17 +47,19 @@ public class BoardView extends View {
 		case MotionEvent.ACTION_MOVE:
 			break;
 		case MotionEvent.ACTION_UP:
-			if (ge.getAction().getType() == Action.END_TURN) {
-				waitForPlayer = true;
-			} else if (ge.getAction().getType() == Action.CHANGE_PLAYER) {
-				ge.nextPlayer();
-				waitForPlayer = false;
-				if(ge.getInspectorId() == -1){
-					ge.buildEvidenceHand();
-				}
-			} else if (ge.getAction().getType() != Action.NONE) {
-				if(ge.canProcess()){
-					ge.process();
+			if(!ge.isEndOfGame()){
+				if (ge.getAction().getType() == Action.END_TURN) {
+					waitForPlayer = true;
+				} else if (ge.getAction().getType() == Action.CHANGE_PLAYER) {
+					ge.nextPlayer();
+					waitForPlayer = false;
+					if(ge.getInspectorId() == -1){
+						ge.buildEvidenceHand();
+					}
+				} else if (ge.getAction().getType() != Action.NONE) {
+					if(ge.canProcess()){
+						ge.process();
+					}
 				}
 			}
 			break;
@@ -66,7 +68,7 @@ public class BoardView extends View {
 		return true;
 	}
 
-	public Action getAction(int x, int y) {
+	private Action getAction(int x, int y) {
 		Action res = new Action();
 		Board b = ge.getBoard();
 		Rect r = null;

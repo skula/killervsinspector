@@ -45,11 +45,19 @@ public class Drawer {
 		c.drawBitmap(lib.get(R.drawable.background), new Rect(0, 0, 768, 1024), new Rect(0, 0, 800, 1280), paint);
 		drawPersons(waitForPlayer, c);
 
-		if (!waitForPlayer) {
-			drawShiftButtons(c);
-			drawButtons(c);
-		} else {
-			drawWaitPlayerPanel(c);
+		if(!engine.isEndOfGame()){
+			if (!waitForPlayer ) {
+				drawShiftButtons(c);
+				drawButtons(c);
+			} else {
+				drawWaitPlayerPanel(c);
+			}
+		}else{
+			if(engine.getWinner() == GameEngine.TURN_KILLER){
+				c.drawRect(new Rect(325, 970, 467, 1112), paint);
+			}else{
+				c.drawRect(new Rect(325, 970, 467, 1112), paint);
+			}
 		}
 
 		paint.setColor(Color.RED);
@@ -57,11 +65,13 @@ public class Drawer {
 		int w = lib.get(R.drawable.inspector_turn).getWidth();
 		int h = lib.get(R.drawable.btn_pick).getHeight();
 
+		
 		if (engine.getToken() == GameEngine.TURN_INSPECTOR) {
 			c.drawText("INSPECTEUR", 400, 40, paint);
 		} else {
 			c.drawText("TUEUR", 400, 40, paint);
 		}
+		
 
 		c.drawText(engine.getLog(), 1000, 300, paint);
 	}
@@ -170,7 +180,7 @@ public class Drawer {
 			if (lastAction.getType() == Action.SHIFT_DOWN && lastAction.getPosition().getX() == i) {
 				c.drawBitmap(lib.get(R.drawable.shift_up_disabled), H_SHIFT_RECT, new Rect(x, y1, x + SHIFT_WIDTH, y1
 						+ SHIFT_HEIGHT), paint);
-			} else {
+			}else {
 				c.drawBitmap(lib.get(R.drawable.shift_up), H_SHIFT_RECT, new Rect(x, y1, x + SHIFT_WIDTH, y1
 						+ SHIFT_HEIGHT), paint);
 			}
