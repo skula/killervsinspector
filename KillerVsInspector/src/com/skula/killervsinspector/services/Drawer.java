@@ -32,16 +32,16 @@ public class Drawer {
 	private PictureLibrary lib;
 	private Paint paint;
 	private GameEngine engine;
+	private String log;
 
 	public Drawer(Resources res, GameEngine engine) {
+		this.log = "";
 		this.engine = engine;
 		this.paint = new Paint();
 		this.lib = new PictureLibrary(res);
 	}
 
 	public void draw(boolean waitForPlayer, Canvas c) {
-		paint.setColor(Color.WHITE);
-		//c.drawRect(new Rect(0, 0, 800, 1200), paint);
 		c.drawBitmap(lib.get(R.drawable.background), new Rect(0, 0, 768, 1024), new Rect(0, 0, 800, 1280), paint);
 		drawPersons(waitForPlayer, c);
 
@@ -59,21 +59,13 @@ public class Drawer {
 				c.drawRect(new Rect(325, 970, 467, 1112), paint);
 			}
 		}
-
-		paint.setColor(Color.RED);
-		paint.setTextSize(30f);
-		int w = lib.get(R.drawable.inspector_turn).getWidth();
-		int h = lib.get(R.drawable.btn_pick).getHeight();
-
 		
-		if (engine.getToken() == GameEngine.TURN_INSPECTOR) {
-			c.drawText("INSPECTEUR", 400, 40, paint);
-		} else {
-			c.drawText("TUEUR", 400, 40, paint);
-		}
-		
+		paint.setColor(Color.WHITE);
+		paint.setTextSize(35f);
+		//int w = lib.get(R.drawable.inspector_turn).getWidth();
+		//int h = lib.get(R.drawable.btn_pick).getHeight();
 
-		c.drawText(engine.getLog(), 1000, 300, paint);
+		c.drawText(log, 30, 1180, paint);
 	}
 
 	private void drawWaitPlayerPanel(Canvas c) {
@@ -229,5 +221,9 @@ public class Drawer {
 			c.drawBitmap(lib.get(R.drawable.btn_end), new Rect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT), new Rect(800
 					- SHIFT_WIDTH - BUTTON_WIDTH, 1000, 800 - SHIFT_WIDTH, 1000 + BUTTON_HEIGHT), paint);
 		}
+	}
+	
+	public void setLog(String log){
+		this.log = log;
 	}
 }

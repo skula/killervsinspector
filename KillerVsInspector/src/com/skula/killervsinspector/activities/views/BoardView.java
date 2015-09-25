@@ -41,7 +41,6 @@ public class BoardView extends View {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			Action a = getAction(x, y);
-			msg = a.toString();
 			ge.setAction(a);
 			break;
 		case MotionEvent.ACTION_MOVE:
@@ -57,8 +56,9 @@ public class BoardView extends View {
 						ge.buildEvidenceHand();
 					}
 				} else if (ge.getAction().getType() != Action.NONE) {
+					drawer.setLog("");
 					if(ge.canProcess()){
-						ge.process();
+						drawer.setLog(ge.process());
 					}
 				}
 			}
@@ -169,8 +169,5 @@ public class BoardView extends View {
 	@Override
 	public void draw(Canvas canvas) {
 		drawer.draw(waitForPlayer, canvas);
-		paint.setColor(Color.RED);
-		paint.setTextSize(30f);
-		canvas.drawText(msg, 20, 40, paint);
 	}
 }

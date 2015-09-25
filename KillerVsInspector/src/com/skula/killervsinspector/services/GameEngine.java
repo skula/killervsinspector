@@ -34,8 +34,6 @@ public class GameEngine {
 	private boolean hasClue;
 	private boolean endOfTurn;
 	
-	private String log;
-	
 	public GameEngine() {
 		// Person.shufflePersons();
 		this.board = new Board(Person.getAllPersons());
@@ -55,7 +53,6 @@ public class GameEngine {
 		this.nDeceased = 0;
 		this.endOfTurn = false;
 
-		this.log = "";
 		// bouchon
 		//this.killerId = 12;
 		//evidenceHand.add(18);
@@ -211,17 +208,19 @@ public class GameEngine {
 		}
 	}
 
-	private void processFirstTurn() {
+	private String processFirstTurn() {
 		if (token == TURN_KILLER) {
 			if (killerId == -1) {
 				setKillerId();
 				action = null;
+				return "";
 			} else {
 				board.setDeceased(true, action.getPosition());
 				nDeceased++;
 				lastAction = action;
 				action = null;
 				endOfTurn = true;
+				return "Le tueur a éliminé " + board.get(lastAction.getPosition()).getName();
 			}
 		} else {
 			if (evidenceHand.isEmpty()) {
@@ -229,9 +228,9 @@ public class GameEngine {
 					addEvidenceToHand();
 				}
 				this.action = null;
+				return "La liste des innocents est vide";
 			} else {
 				inspectorId = board.getId(action.getPosition());
-				//evidenceHand.remove(inspectorId);
 				int cpt = 0;
 				for(Integer i: evidenceHand){
 					if(i == inspectorId){
@@ -245,11 +244,12 @@ public class GameEngine {
 				action = null;
 				isFirstTurn = false;
 				endOfTurn = true;
+				return "L'inspecteur a choisi son identité";
 			}
 		}
 	}
 
-	private void processNextTurns() {
+	private String processNextTurns() {
 		// gestion des deplacement de lignes et colonnes
 		switch (action.getType()) {
 		case Action.SHIFT_DOWN:
@@ -257,25 +257,41 @@ public class GameEngine {
 			lastAction = action;
 			this.action = null;
 			endOfTurn = true;
-			return;
+			if(token == TURN_KILLER){
+				return "Le tueur a déplacé la colonne " + (lastAction.getPosition().getX()+1) + " vers le bas";
+			}else{
+				return "L'inspecteur a déplacé la colonne " + (lastAction.getPosition().getX()+1) + " vers le bas";
+			}
 		case Action.SHIFT_UP:
 			board.shiftColumn(action.getPosition().getX(), Action.SHIFT_UP);
 			lastAction = action;
 			this.action = null;
 			endOfTurn = true;
-			return;
+			if(token == TURN_KILLER){
+				return "Le tueur a déplacé la colonne " + (lastAction.getPosition().getX()+1) + " vers le haut";
+			}else{
+				return "L'inspecteur a déplacé la colonne " + (lastAction.getPosition().getX()+1) + " vers le haut";
+			}
 		case Action.SHIFT_LEFT:
 			board.shiftRow(action.getPosition().getY(), Action.SHIFT_LEFT);
 			lastAction = action;
 			this.action = null;
 			endOfTurn = true;
-			return;
+			if(token == TURN_KILLER){
+				return "Le tueur a dÃ©placer la ligne " + (lastAction.getPosition().getX()+1) + " vers la gauche";
+			}else{
+				return "L'inspecteur a déplacé la ligne " + (lastAction.getPosition().getX()+1) + " vers la gauche";
+			}
 		case Action.SHIFT_RIGHT:
 			board.shiftRow(action.getPosition().getY(), Action.SHIFT_RIGHT);
 			lastAction = action;
 			this.action = null;
 			endOfTurn = true;
-			return;
+			if(token == TURN_KILLER){
+				return "Le tueur a déplacé la ligne " + (lastAction.getPosition().getX()+1) + " vers la droite";
+			}else{
+				return "L'inspecteur a déplacé la ligne " + (lastAction.getPosition().getX()+1) + " vers la droite";
+			}
 		}
 
 		// autres actions
@@ -288,6 +304,7 @@ public class GameEngine {
 				if (nDeceased == MAX_DECEASED || isInspector(action.getPosition())) {
 					endOfGame = true;
 					winnerId = TURN_KILLER;
+					return "Le tueur a éliminé 16 personnes";
 				}
 				lastAction = action;
 				action = null;
@@ -295,17 +312,24 @@ public class GameEngine {
 				if(isInspectorClose(lastAction.getPosition())){
 					hasClue = true;
 					cluePosition = lastAction.getPosition();
+					return "Le tueur a éliminé l'inspecteur";
 				}
 				
 				endOfTurn = true;
-				return;
+				return "Le tueur a éliminé " + board.get(lastAction.getPosition()).getName();
 			case Action.PICK_EVIDENCE:
-				board.setInnocent(true, board.getPosition(killerId));
-				setKillerId();
-				lastAction = action;
-				action = null;
-				endOfTurn = true;
-				return;
+				int id = evidenceDeck.remove(0).getId();
+				if(!board.get(id).isDeceased()){
+					board.setInnocent(true, board.getPosition(killerId));
+					killerId = id;
+					lastAction = action;
+					action = null;
+					endOfTurn = true;
+					return "Le tueur a changé d'identité. "  + board.get(lastAction.getPosition()).getName() + " est disculpé";
+				}else{
+					board.setInnocent(true, lastAction.getPosition());
+					return "Le tueur a tenté de prendre l'identité de " + board.get(lastAction.getPosition()).getName();
+				}
 			}
 		} else {
 			if (isExonerating) {
@@ -319,15 +343,17 @@ public class GameEngine {
 					cluePosition = lastAction.getPosition();
 				}
 				endOfTurn = true;
+				return "L'inspecteur disculpe "  + board.get(lastAction.getPosition()).getName();
 			} else {
 				switch (action.getType()) {
 				case Action.SELECT_PERSON:
 					if (board.getId(action.getPosition()) == killerId) {
 						endOfGame = true;
 						winnerId = TURN_INSPECTOR;
+					return "L'inspecteur a arreté le tueur";
 					}
 					endOfTurn = true;
-					break;
+					return "L'inspecteur arrête "  + board.get(lastAction.getPosition()).getName();
 				case Action.PICK_EVIDENCE:
 					addEvidenceToHand();
 					lastAction = action;
@@ -339,6 +365,7 @@ public class GameEngine {
 				}
 			}
 		}
+		return "";
 	}
 
 	public boolean canProcess() {
@@ -349,11 +376,11 @@ public class GameEngine {
 		}
 	}
 
-	public void process() {
+	public String process() {
 		if (isFirstTurn) {
-			processFirstTurn();
+			return processFirstTurn();
 		} else {
-			processNextTurns();
+			return processNextTurns();
 		}
 	}
 	
@@ -496,10 +523,6 @@ public class GameEngine {
 	public Position getCluePosition(){
 		return cluePosition;
 	}	
-	
-	public String getLog(){
-		return log;
-	}
 	
 	public int getWinner(){
 		return winnerId;

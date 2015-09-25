@@ -20,11 +20,11 @@ public class Board {
 		}
 
 		// bouchons
-		//setDeceased(true, 0, 0);
-		//setDeceased(true, 1, 0);
-		//setDeceased(true, 2, 0);
-		//setDeceased(true, 3, 0);
-		//setDeceased(true, 4, 0);
+		// setDeceased(true, 0, 0);
+		// setDeceased(true, 1, 0);
+		// setDeceased(true, 2, 0);
+		// setDeceased(true, 3, 0);
+		// setDeceased(true, 4, 0);
 	}
 
 	public int getId(int i, int j) {
@@ -48,18 +48,18 @@ public class Board {
 	}
 
 	public boolean isAdjacent(int xSrc, int ySrc, int xDest, int yDest) {
-		if(xSrc == xDest && ySrc == yDest){
+		if (xSrc == xDest && ySrc == yDest) {
 			return false;
 		}
 
-		if(xDest < xSrc - 1 || xDest > xSrc + 1){
+		if (xDest < xSrc - 1 || xDest > xSrc + 1) {
 			return false;
 		}
 
-		if(yDest < ySrc - 1 || yDest > ySrc + 1){
+		if (yDest < ySrc - 1 || yDest > ySrc + 1) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -146,6 +146,17 @@ public class Board {
 
 		nRows--;
 		board = tmp;
+	}
+
+	public Person get(int id) {
+		for (int i = 0; i < nRows; i++) {
+			for (int j = 0; j < nColumns; j++) {
+				if (getId(i, j) == id) {
+					return board[i][j];
+				}
+			}
+		}
+		return null;
 	}
 
 	public Person get(int x, int y) {

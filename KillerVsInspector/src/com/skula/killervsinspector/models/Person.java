@@ -18,7 +18,6 @@ public class Person {
 	private static List<Person> persons;
 	static {
 		persons = new ArrayList<Person>();
-
 		persons.add(new Person(0, "Ernest", R.drawable.ernest_suspect, R.drawable.ernest_offside));
 		persons.add(new Person(1, "Franklin", R.drawable.franklin_suspect, R.drawable.franklin_offside));
 		persons.add(new Person(2, "Phoebe", R.drawable.phoebe_suspect, R.drawable.phoebe_offside));
