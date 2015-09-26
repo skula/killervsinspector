@@ -46,8 +46,8 @@ public class Drawer {
 		drawPersons(waitForPlayer, c);
 
 		if(!engine.isEndOfGame()){
+			drawShiftButtons(c);
 			if (!waitForPlayer ) {
-				drawShiftButtons(c);
 				drawButtons(c);
 			} else {
 				drawWaitPlayerPanel(c);
