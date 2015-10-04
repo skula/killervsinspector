@@ -272,9 +272,9 @@ public class GameEngine {
 			this.action = null;
 			endOfTurn = true;
 			if (token == TURN_KILLER) {
-				return "Le tueur a dÃ©placer la ligne " + (lastAction.getPosition().getX() + 1) + " vers la gauche";
+				return "Le tueur a dÃ©placer la ligne " + (lastAction.getPosition().getY() + 1) + " vers la gauche";
 			} else {
-				return "L'inspecteur a déplacé la ligne " + (lastAction.getPosition().getX() + 1) + " vers la gauche";
+				return "L'inspecteur a déplacé la ligne " + (lastAction.getPosition().getY() + 1) + " vers la gauche";
 			}
 		case Action.SHIFT_RIGHT:
 			board.shiftRow(action.getPosition().getY(), Action.SHIFT_RIGHT);
@@ -282,9 +282,9 @@ public class GameEngine {
 			this.action = null;
 			endOfTurn = true;
 			if (token == TURN_KILLER) {
-				return "Le tueur a déplacé la ligne " + (lastAction.getPosition().getX() + 1) + " vers la droite";
+				return "Le tueur a déplacé la ligne " + (lastAction.getPosition().getY() + 1) + " vers la droite";
 			} else {
-				return "L'inspecteur a déplacé la ligne " + (lastAction.getPosition().getX() + 1) + " vers la droite";
+				return "L'inspecteur a déplacé la ligne " + (lastAction.getPosition().getY() + 1) + " vers la droite";
 			}
 		}
 

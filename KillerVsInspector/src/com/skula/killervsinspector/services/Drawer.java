@@ -54,9 +54,9 @@ public class Drawer {
 			}
 		}else{
 			if(engine.getWinner() == GameEngine.TURN_KILLER){
-				c.drawRect(new Rect(325, 970, 467, 1112), paint);
+				c.drawBitmap(lib.get(R.drawable.killer_wins), new Rect(0, 0, 142, 142), new Rect(325, 970, 467, 1112), paint);
 			}else{
-				c.drawRect(new Rect(325, 970, 467, 1112), paint);
+				c.drawBitmap(lib.get(R.drawable.inspector_wins), new Rect(0, 0, 142, 142), new Rect(325, 970, 467, 1112), paint);
 			}
 		}
 		
