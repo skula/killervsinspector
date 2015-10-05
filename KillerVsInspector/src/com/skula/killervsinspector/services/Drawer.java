@@ -92,8 +92,7 @@ public class Drawer {
 				// draw special effect
 				if (b.get(j, i).isDeceased()) {
 					c.drawBitmap(lib.get(R.drawable.deceased), PERSON_RECT, r, paint);
-				}
-				if (b.get(j, i).isInnocent()) {
+				}else if(b.get(j, i).isInnocent()) {
 					c.drawBitmap(lib.get(R.drawable.innocent), PERSON_RECT, r, paint);
 				}
 				if (!waitForPlayer && engine.getToken() == GameEngine.TURN_INSPECTOR) {
@@ -133,7 +132,7 @@ public class Drawer {
 								x = X0 + (PERSON_WIDTH + SEPARATOR) * (tmp.getX() + i);
 								y = Y0 + (PERSON_HEIGHT + SEPARATOR) * (tmp.getY() + j);
 								r = new Rect(x, y, x + PERSON_WIDTH, y + PERSON_HEIGHT);
-								c.drawBitmap(lib.get(R.drawable.near_clue), PERSON_RECT, r, paint);
+								c.drawBitmap(lib.get(R.drawable.near_killer), PERSON_RECT, r, paint);
 							}
 						}
 					}
@@ -151,7 +150,7 @@ public class Drawer {
 								x = X0 + (PERSON_WIDTH + SEPARATOR) * (tmp.getX() + i);
 								y = Y0 + (PERSON_HEIGHT + SEPARATOR) * (tmp.getY() + j);
 								r = new Rect(x, y, x + PERSON_WIDTH, y + PERSON_HEIGHT);
-								c.drawBitmap(lib.get(R.drawable.near_clue), PERSON_RECT, r, paint);
+								c.drawBitmap(lib.get(R.drawable.near_inspector), PERSON_RECT, r, paint);
 							}
 						}
 					}

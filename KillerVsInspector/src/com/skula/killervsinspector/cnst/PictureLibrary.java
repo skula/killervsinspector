@@ -83,7 +83,8 @@ public class PictureLibrary {
 		
 		this.map.put(R.drawable.player, BitmapFactory.decodeResource(res, R.drawable.player));
 		this.map.put(R.drawable.evidence, BitmapFactory.decodeResource(res, R.drawable.evidence));
-		this.map.put(R.drawable.near_clue, BitmapFactory.decodeResource(res, R.drawable.near_clue));
+		this.map.put(R.drawable.near_inspector, BitmapFactory.decodeResource(res, R.drawable.near_inspector));
+		this.map.put(R.drawable.near_killer, BitmapFactory.decodeResource(res, R.drawable.near_killer));
 
 		this.map.put(R.drawable.btn_end, BitmapFactory.decodeResource(res, R.drawable.btn_end));
 		this.map.put(R.drawable.btn_pick, BitmapFactory.decodeResource(res, R.drawable.btn_pick));

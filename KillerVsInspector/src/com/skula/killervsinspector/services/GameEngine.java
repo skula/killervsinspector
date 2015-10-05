@@ -310,7 +310,7 @@ public class GameEngine {
 				lastAction = action;
 				action = null;
 
-				if (isInspectorClose(lastAction.getPosition())) {
+				if (board.get(lastAction.getPosition()).isInnocent() && isInspectorClose(lastAction.getPosition())) {
 					hasClue = true;
 					cluePosition = lastAction.getPosition();
 				}
