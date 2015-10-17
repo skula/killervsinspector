@@ -353,11 +353,10 @@ public class GameEngine {
 						winnerId = TURN_INSPECTOR;
 						return "L'inspecteur a arreté le tueur";
 					}
-					board.setInnocent(true, action.getPosition());
 					lastAction = action;
 					action = null;
 					endOfTurn = true;
-					return "L'inspecteur arrête " + board.get(lastAction.getPosition()).getName();
+					return "L'inspecteur a tenté d'arreter " + board.get(lastAction.getPosition()).getName();
 				case Action.PICK_EVIDENCE:
 					addEvidenceToHand();
 					lastAction = action;
