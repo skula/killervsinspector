@@ -1,15 +1,19 @@
 package com.skula.killervsinspector.services;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.skula.killervsinspector.R;
+import com.skula.killervsinspector.cnst.DrawAreas;
 import com.skula.killervsinspector.cnst.PictureLibrary;
+import com.skula.killervsinspector.cnst.TouchArea;
 import com.skula.killervsinspector.models.Action;
 import com.skula.killervsinspector.models.Board;
+import com.skula.killervsinspector.models.Point;
 import com.skula.killervsinspector.models.Position;
 
 public class Drawer {
@@ -39,10 +43,14 @@ public class Drawer {
 		this.engine = engine;
 		this.paint = new Paint();
 		this.lib = new PictureLibrary(res);
+		Bitmap b = lib.get(R.drawable.barrin_offside);//156 208
+
+		b = lib.get(R.drawable.shift_down); //107 107
+		b=null;
 	}
 
 	public void draw(boolean waitForPlayer, Canvas c) {
-		c.drawBitmap(lib.get(R.drawable.background), new Rect(0, 0, 768, 1024), new Rect(0, 0, 800, 1280), paint);
+		drawPict(c, R.drawable.background, DrawAreas.P0);
 		drawPersons(waitForPlayer, c);
 
 		if(!engine.isEndOfGame()){
@@ -54,50 +62,41 @@ public class Drawer {
 			}
 		}else{
 			if(engine.getWinner() == GameEngine.TURN_KILLER){
-				c.drawBitmap(lib.get(R.drawable.killer_wins), new Rect(0, 0, 142, 142), new Rect(325, 970, 467, 1112), paint);
+				drawPict(c, R.drawable.killer_wins, DrawAreas.WINNER);
 			}else{
-				c.drawBitmap(lib.get(R.drawable.inspector_wins), new Rect(0, 0, 142, 142), new Rect(325, 970, 467, 1112), paint);
+				drawPict(c, R.drawable.inspector_wins, DrawAreas.WINNER);
 			}
 		}
 		
 		paint.setColor(Color.WHITE);
 		paint.setTextSize(35f);
-		//int w = lib.get(R.drawable.inspector_turn).getWidth();
-		//int h = lib.get(R.drawable.btn_pick).getHeight();
-
-		c.drawText(log, 30, 1180, paint);
+		c.drawText(log, DrawAreas.LOG.getX(), DrawAreas.LOG.getY(), paint);
 	}
 
 	private void drawWaitPlayerPanel(Canvas c) {
 		if(engine.getToken() == GameEngine.TURN_INSPECTOR){
-			c.drawBitmap(lib.get(R.drawable.killer_turn), new Rect(0, 0, 142, 142), new Rect(325, 970, 467, 1112), paint);
+			drawPict(c, R.drawable.killer_turn, DrawAreas.NEXT_PLAYER_LABEL);
 		}else{
-			c.drawBitmap(lib.get(R.drawable.inspector_turn), new Rect(0, 0, 142, 142), new Rect(325, 970, 467, 1112), paint);
+			drawPict(c, R.drawable.inspector_turn, DrawAreas.NEXT_PLAYER_LABEL);
 		}
 	}
 
 	public void drawPersons(boolean waitForPlayer, Canvas c) {
 		Board b = engine.getBoard();
-		Rect r = null;
-		int x = X0;
-		int y = Y0;
 		for (int i = 0; i < b.getnRows(); i++) {
 			for (int j = 0; j < b.getnColumns(); j++) {
-				r = new Rect(x, y, x + PERSON_WIDTH, y + PERSON_HEIGHT);
-				int d = b.get(j, i).getDrawableId();
-
 				// draw card type
-				c.drawBitmap(lib.get(b.get(j, i).getDrawableId()), PERSON_RECT, r, paint);
+				drawPict(c, b.get(j, i).getDrawableId(), TouchArea.TILES[j][i]);
 
 				// draw special effect
 				if (b.get(j, i).isDeceased()) {
-					c.drawBitmap(lib.get(R.drawable.deceased), PERSON_RECT, r, paint);
+					drawPict(c, R.drawable.deceased, TouchArea.TILES[j][i]);
 				}else if(b.get(j, i).isInnocent()) {
-					c.drawBitmap(lib.get(R.drawable.innocent), PERSON_RECT, r, paint);
+					drawPict(c, R.drawable.innocent, TouchArea.TILES[j][i]);
 				}
 				if (!waitForPlayer && engine.getToken() == GameEngine.TURN_INSPECTOR) {
 					if (engine.isEvidence(b.getId(j, i))) {
-						c.drawBitmap(lib.get(R.drawable.evidence), PERSON_RECT, r, paint);
+						drawPict(c, R.drawable.evidence, TouchArea.TILES[j][i]);
 					}
 				}
 
@@ -106,19 +105,15 @@ public class Drawer {
 					if (engine.getToken() == GameEngine.TURN_KILLER) {
 						int aa = engine.getKillerId();
 						if (b.getId(j, i) == engine.getKillerId()) {
-							c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
+							drawPict(c, R.drawable.player, TouchArea.TILES[j][i]);
 						}
 					} else {
 						if (b.getId(j, i) == engine.getInspectorId()) {
-							c.drawBitmap(lib.get(R.drawable.player), PERSON_RECT, r, paint);
+							drawPict(c, R.drawable.player, TouchArea.TILES[j][i]);
 						}
 					}
 				}
-
-				x += PERSON_WIDTH + SEPARATOR;
 			}
-			y += PERSON_HEIGHT + SEPARATOR;
-			x = X0;
 		}
 
 		// indice sur la position du tueur en cas d'exoneration
@@ -129,10 +124,7 @@ public class Drawer {
 					for (int i = -1; i <= 1; i++) {
 						if (tmp.getX() + i >= 0 && tmp.getX() + i < b.getnColumns() && tmp.getY() + j >= 0 && tmp.getY() + j < b.getnRows()) {
 							if (!(j == 0 && i == 0) && !b.get(tmp.getX() + i, tmp.getY() + j).isDeceased() && !b.get(tmp.getX() + i, tmp.getY() + j).isInnocent()) {
-								x = X0 + (PERSON_WIDTH + SEPARATOR) * (tmp.getX() + i);
-								y = Y0 + (PERSON_HEIGHT + SEPARATOR) * (tmp.getY() + j);
-								r = new Rect(x, y, x + PERSON_WIDTH, y + PERSON_HEIGHT);
-								c.drawBitmap(lib.get(R.drawable.near_killer), PERSON_RECT, r, paint);
+								drawPict(c, R.drawable.near_killer, TouchArea.TILES[tmp.getX() + i][tmp.getY() + j]);
 							}
 						}
 					}
@@ -147,10 +139,7 @@ public class Drawer {
 					for (int i = -1; i <= 1; i++) {
 						if (tmp.getX() + i >= 0 && tmp.getX() + i < b.getnColumns() && tmp.getY() + j >= 0 && tmp.getY() + j < b.getnRows()) {
 							if (!(j == 0 && i == 0) && !b.get(tmp.getX() + i, tmp.getY() + j).isDeceased() && !b.get(tmp.getX() + i, tmp.getY() + j).isInnocent()) {
-								x = X0 + (PERSON_WIDTH + SEPARATOR) * (tmp.getX() + i);
-								y = Y0 + (PERSON_HEIGHT + SEPARATOR) * (tmp.getY() + j);
-								r = new Rect(x, y, x + PERSON_WIDTH, y + PERSON_HEIGHT);
-								c.drawBitmap(lib.get(R.drawable.near_inspector), PERSON_RECT, r, paint);
+								drawPict(c, R.drawable.near_inspector, TouchArea.TILES[tmp.getX() + i][tmp.getY() + j]);
 							}
 						}
 					}
@@ -160,6 +149,39 @@ public class Drawer {
 	}
 
 	public void drawShiftButtons(Canvas c) {
+		Board b = engine.getBoard();
+		Action lastAction = engine.getLastAction();
+
+		for (int i = 0; i < b.getnColumns(); i++) {
+			if (lastAction.getType() == Action.SHIFT_DOWN && lastAction.getPosition().getX() == i) {
+				drawPict(c, R.drawable.shift_up_disabled, TouchArea.SHIFT_UP[i]);
+			}else {
+				drawPict(c, R.drawable.shift_up, TouchArea.SHIFT_UP[i]);
+			}
+
+			if (lastAction.getType() == Action.SHIFT_UP && lastAction.getPosition().getX() == i) {
+				drawPict(c, R.drawable.shift_down_disabled, TouchArea.SHIFT_DOWN[i]);
+			} else {
+				drawPict(c, R.drawable.shift_down, TouchArea.SHIFT_DOWN[i]);
+			}
+		}
+
+		for (int i = 0; i < b.getnRows(); i++) {
+			if (lastAction.getType() == Action.SHIFT_RIGHT && lastAction.getPosition().getY() == i) {
+				drawPict(c, R.drawable.shift_left_disabled, TouchArea.SHIFT_LEFT[i]);
+			} else {
+				drawPict(c, R.drawable.shift_left, TouchArea.SHIFT_LEFT[i]);
+			}
+
+			if (lastAction.getType() == Action.SHIFT_LEFT && lastAction.getPosition().getY() == i) {
+				drawPict(c, R.drawable.shift_right_disabled, TouchArea.SHIFT_RIGHT[i]);
+			} else {
+				drawPict(c, R.drawable.shift_right, TouchArea.SHIFT_RIGHT[i]);
+			}
+		}
+	}
+	
+	public void drawShiftButtons2(Canvas c) {
 		Board b = engine.getBoard();
 		int x = X0 + (PERSON_WIDTH - SHIFT_WIDTH) / 2;
 		int y1 = Y0 - SHIFT_WIDTH;
@@ -213,16 +235,27 @@ public class Drawer {
 	public void drawButtons(Canvas c) {
 		if (!engine.isEndOfTurn()) {
 			if (!engine.isFirstTurn()) {
-				c.drawBitmap(lib.get(R.drawable.btn_pick), new Rect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT), new Rect(
-						SHIFT_WIDTH, 1000, SHIFT_WIDTH + BUTTON_WIDTH, 1000 + BUTTON_HEIGHT), paint);
+				drawPict(c, R.drawable.btn_pick, DrawAreas.BUTTON_PICK);
 			}
 		} else {
-			c.drawBitmap(lib.get(R.drawable.btn_end), new Rect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT), new Rect(800
-					- SHIFT_WIDTH - BUTTON_WIDTH, 1000, 800 - SHIFT_WIDTH, 1000 + BUTTON_HEIGHT), paint);
+			drawPict(c, R.drawable.btn_end, DrawAreas.BUTTON_END);
 		}
 	}
 	
 	public void setLog(String log){
 		this.log = log;
+	}
+
+	private void drawPict(Canvas c, int id, Point p) {
+		Bitmap bmp = lib.get(id);
+		Rect src = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
+		Rect dest = new Rect(0 + p.getX(), 0 + p.getY(), bmp.getWidth() + p.getX(), bmp.getHeight() + p.getY());
+		c.drawBitmap(bmp, src, dest, paint);
+	}
+
+	private void drawPict(Canvas c, int id, Rect dest) {
+		Bitmap bmp = lib.get(id);
+		Rect src = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
+		c.drawBitmap(bmp, src, dest, paint);
 	}
 }
